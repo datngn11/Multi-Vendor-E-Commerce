@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export default function Home() {
   return (
-    <div className="min-h-screen font-[family-name:var(--font-geist-sans)] p-5 flex flex-col gap-8">
+    <div className="flex flex-col gap-8 font-[family-name:var(--font-geist-sans)]">
       <h1 className="text-7xl">Hello world</h1>
 
       <div className="flex gap-4">

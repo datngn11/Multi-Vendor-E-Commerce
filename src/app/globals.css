@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -55,7 +55,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(95.31% 0.0496 169.04);
+  --background: oklch(0.96 0.0197 169.04);
   --foreground: oklch(0% 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
