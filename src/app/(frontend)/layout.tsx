@@ -4,7 +4,7 @@ import "./globals.css";
 import AppProviders from "./providers";
 
 const dmSans = DM_Sans({
-  variable: "--font-geist-sans",
+  variable: "--font-dm-sans",
   subsets: ["latin"],
 });
 

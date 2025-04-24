@@ -1,32 +1,20 @@
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { Textarea } from "@/components/ui/textarea";
+import configPromise from "@payload-config";
+import { getPayload } from "payload";
 
-export default function Home() {
+const HomePage = async () => {
+  const payload = await getPayload({
+    config: configPromise,
+  });
+
+  const data = await payload.find({
+    collection: "categories",
+  });
+
   return (
-    <div className="flex flex-col gap-8 font-[family-name:var(--font-geist-sans)]">
-      <h1 className="text-7xl">Hello world</h1>
-
-      <div className="flex gap-4">
-        <Button>Button</Button>
-        <Button variant="noShadow">noShadow</Button>
-
-        <Button variant="destructive">Destructive</Button>
-        <Button variant="link">Link</Button>
-
-        <Button variant="reverse">Reverse</Button>
-        <Button variant="neutral">Neutral</Button>
-      </div>
-
-      <Progress value={50} />
-
-      <Input placeholder="Input" />
-
-      <Textarea placeholder="Textarea" />
-
-      <Checkbox />
+    <div className="flex flex-col gap-8 font-[family-name:var(--font-dm-sans)]">
+      <pre>{JSON.stringify(data, undefined, 2)}</pre>
     </div>
   );
-}
+};
+
+export default HomePage;
