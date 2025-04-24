@@ -13,13 +13,11 @@ export const Header = () => {
       <Navigation />
 
       <div className="flex items-center gap-4">
-        <Button className="mr-4 font-bold" variant="default">
-          Get Started
-        </Button>
+        <DarkModeToggler />
 
         <AuthButton />
 
-        <DarkModeToggler />
+        <Button className="font-bold">Get Started</Button>
       </div>
     </header>
   );
