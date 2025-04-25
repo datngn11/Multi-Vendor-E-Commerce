@@ -16,7 +16,14 @@ export const Category: CollectionConfig = {
     },
     {
       name: "color",
+
       type: "text",
+      admin: {
+        components: {
+          Field: "@/components/fields/color-picker.tsx",
+          Label: undefined,
+        },
+      },
     },
     {
       name: "parent",
