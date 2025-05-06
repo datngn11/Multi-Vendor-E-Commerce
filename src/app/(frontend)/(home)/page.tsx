@@ -1,19 +1,27 @@
-import configPromise from "@payload-config";
-import { getPayload } from "payload";
+import { LayoutDashboardIcon } from "lucide-react";
+import { SearchFilters } from "./_components/SearchFilters";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const HomePage = async () => {
-  const payload = await getPayload({
-    config: configPromise,
-  });
-
-  const data = await payload.find({
-    collection: "categories",
-  });
-
   return (
-    <div className="flex flex-col gap-8 font-[family-name:var(--font-dm-sans)]">
-      <pre>{JSON.stringify(data, undefined, 2)}</pre>
-    </div>
+    <>
+      <SearchFilters />
+      <div className="p-4 lg:px-12">
+        <h1 className="text-center text-4xl font-bold">Welcome to VELÉLS</h1>
+        <p className="text-center">
+          This is a simple and elegant design system for your projects.
+        </p>
+      </div>
+
+      <div className="fixed right-4 bottom-4">
+        <Link href="/admin">
+          <Button size="icon" variant="default" className="rounded-full">
+            <LayoutDashboardIcon />
+          </Button>
+        </Link>
+      </div>
+    </>
   );
 };
 

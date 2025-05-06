@@ -1,21 +1,54 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { LucideIcon } from "lucide-react";
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
-  return (
-    <input
-      type={type}
-      data-slot="input"
-      className={cn(
-        "flex h-10 w-full rounded-base border-2 border-border bg-secondary-background selection:bg-primary selection:text-primary-foreground px-3 py-2 text-sm font-base text-foreground file:border-0 file:bg-transparent file:text-sm file:font-heading placeholder:text-foreground/50 disabled:cursor-not-allowed disabled:opacity-50",
-        "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
-        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-        className
-      )}
-      {...props}
-    />
-  );
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  startIcon?: LucideIcon;
+  endIcon?: LucideIcon;
 }
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    { className, type, startIcon: StartIcon, endIcon: EndIcon, ...props },
+    ref,
+  ) => {
+    return (
+      <div className="relative w-full">
+        {StartIcon && (
+          <div className="absolute top-1/2 left-3.5 -translate-y-1/2 transform">
+            <StartIcon size={18} className="text-muted-foreground" />
+          </div>
+        )}
+
+        <input
+          ref={ref}
+          type={type}
+          data-slot="input"
+          className={cn(
+            "rounded-base border-border bg-secondary-background selection:bg-primary selection:text-primary-foreground font-base text-foreground file:font-heading placeholder:text-foreground/50 flex h-10 w-full border-2 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm disabled:cursor-not-allowed disabled:opacity-50",
+            "focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:outline-hidden",
+            "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+            {
+              "pl-10": StartIcon,
+              "pr-10": EndIcon,
+            },
+            className,
+          )}
+          {...props}
+        />
+
+        {EndIcon && (
+          <div className="absolute top-1/2 right-3 -translate-y-1/2 transform">
+            <EndIcon className="text-muted-foreground" size={18} />
+          </div>
+        )}
+      </div>
+    );
+  },
+);
+
+Input.displayName = "Input";
 
 export { Input };

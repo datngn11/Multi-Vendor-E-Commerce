@@ -20,8 +20,8 @@ export const Navigation = () => {
       {routes.map((route) => (
         <Button
           key={route.name}
-          asChild
           variant={currentPath === route.href ? "default" : "neutral"}
+          asChild
         >
           <Link href={route.href}>{route.name}</Link>
         </Button>

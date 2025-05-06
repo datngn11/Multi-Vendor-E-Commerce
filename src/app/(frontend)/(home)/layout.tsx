@@ -7,9 +7,9 @@ interface IProps {
 
 const MainLayout = ({ children }: IProps) => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col font-[family-name:var(--font-dm-sans)]">
       <Header />
-      <main className="flex-auto px-6 py-3">{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );

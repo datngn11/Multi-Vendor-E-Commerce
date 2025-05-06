@@ -19,7 +19,7 @@ const ColorPickerInput: TextFieldClientComponent = ({
   const { value, setValue } = useField<string>({ path });
 
   // Track internal color to reduce rapid re-renders
-  const [color, setColor] = useState<string>(value || "#ffffff");
+  const [color, setColor] = useState<string>(value);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Sync Payload field value → local state
