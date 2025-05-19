@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:fresh": "payload migrate:fresh"
+    "db:fresh": "payload migrate:fresh --force-accept-warning",
+    "db:seed": "tsx src/scripts/seed.ts",
+    "db:reset": "npm run db:fresh && npm run db:seed",
+    "db:reset:local": "MONGODB_URI=mongodb://localhost:27017/velels npm run db:reset "
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -23,6 +26,7 @@
     "@radix-ui/react-slot": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.5.0",
     "graphql": "^16.10.0",
     "lucide-react": "^0.488.0",
     "mongodb": "^6.16.0",
@@ -46,6 +50,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.0",
+    "eslint-plugin-perfectionist": "^4.12.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",

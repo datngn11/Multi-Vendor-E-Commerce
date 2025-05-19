@@ -1,31 +1,27 @@
-import * as React from "react";
-
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
+import * as React from "react";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  startIcon?: LucideIcon;
   endIcon?: LucideIcon;
+  startIcon?: LucideIcon;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    { className, type, startIcon: StartIcon, endIcon: EndIcon, ...props },
+    { className, endIcon: EndIcon, startIcon: StartIcon, type, ...props },
     ref,
   ) => {
     return (
       <div className="relative w-full">
         {StartIcon && (
           <div className="absolute top-1/2 left-3.5 -translate-y-1/2 transform">
-            <StartIcon size={18} className="text-muted-foreground" />
+            <StartIcon className="text-muted-foreground" size={18} />
           </div>
         )}
 
         <input
-          ref={ref}
-          type={type}
-          data-slot="input"
           className={cn(
             "rounded-base border-border bg-secondary-background selection:bg-primary selection:text-primary-foreground font-base text-foreground file:font-heading placeholder:text-foreground/50 flex h-10 w-full border-2 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm disabled:cursor-not-allowed disabled:opacity-50",
             "focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:outline-hidden",
@@ -36,6 +32,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             },
             className,
           )}
+          data-slot="input"
+          ref={ref}
+          type={type}
           {...props}
         />
 

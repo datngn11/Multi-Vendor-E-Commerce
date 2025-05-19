@@ -1,7 +1,8 @@
-import { LayoutDashboardIcon } from "lucide-react";
-import { SearchFilters } from "./_components/SearchFilters";
 import { Button } from "@/components/ui/button";
+import { LayoutDashboardIcon } from "lucide-react";
 import Link from "next/link";
+
+import { SearchFilters } from "./_components/SearchFilters";
 
 const HomePage = async () => {
   return (
@@ -16,7 +17,7 @@ const HomePage = async () => {
 
       <div className="fixed right-4 bottom-4">
         <Link href="/admin">
-          <Button size="icon" variant="default" className="rounded-full">
+          <Button className="rounded-full" size="icon" variant="default">
             <LayoutDashboardIcon />
           </Button>
         </Link>

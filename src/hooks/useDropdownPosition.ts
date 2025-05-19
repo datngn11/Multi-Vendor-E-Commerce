@@ -1,35 +1,43 @@
-//custom hook that recieve ref and calculates the position of a dropdown menu
-
 import { useEffect, useState } from "react";
 
 const DEFAULT_DROPDOWN_WIDTH = 192;
-const DEFAULT_SCROLL_OFFSET = 16;
+const DEFAULT_OFFSET = 16;
+
+/**
+ * @description A custom hook that calculates the position of a dropdown
+ *
+ * @returns An object with:
+ * - top: number - The top position of the dropdown
+ * - left: number - The left position of the dropdown
+ *
+ * @param ref React ref to the element to calculate the position for
+ * @param trigger Boolean to trigger the calculation
+ */
 
 export const useDropdownPosition = (
   ref: React.RefObject<HTMLDivElement | null>,
+  trigger: boolean = false,
 ) => {
-  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [position, setPosition] = useState({ left: 0, top: 0 });
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current || !trigger) return;
 
     const rect = ref.current.getBoundingClientRect();
     let left = rect.left + window.scrollX;
-    let top = rect.bottom + window.scrollY;
+    const top = rect.bottom;
 
+    // If the dropdown goes beyond the right edge of the screen, align it to the right
     if (left + DEFAULT_DROPDOWN_WIDTH > window.innerWidth) {
-      left = rect.right - DEFAULT_DROPDOWN_WIDTH + window.scrollX;
+      left = window.innerWidth - DEFAULT_DROPDOWN_WIDTH - DEFAULT_OFFSET;
+
       if (left < 0) {
-        left =
-          window.innerWidth - DEFAULT_DROPDOWN_WIDTH - DEFAULT_SCROLL_OFFSET;
-      }
-      if (left < 0) {
-        left = DEFAULT_SCROLL_OFFSET;
+        left = DEFAULT_OFFSET;
       }
     }
 
-    setPosition({ top, left });
-  }, [ref.current]);
+    setPosition({ left, top });
+  }, [ref.current, trigger]);
 
   return position;
 };

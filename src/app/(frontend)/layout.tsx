@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+
 import { DM_Sans } from "next/font/google";
 import "@/styles/globals.css";
+
 import AppProviders from "./providers";
 
 const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
   subsets: ["latin"],
+  variable: "--font-dm-sans",
 });
 
 export const metadata: Metadata = {
-  title: "VELÉLS",
   description: "A simple and elegant design system",
+  title: "VELÉLS",
 };
 
 export default function RootLayout({

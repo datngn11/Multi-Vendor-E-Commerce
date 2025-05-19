@@ -6,7 +6,7 @@ export const AuthButton = () => {
   const isAuthorized = true;
 
   return (
-    <Button variant="neutral" className="h-9 w-9 p-0">
+    <Button className="h-9 w-9 p-0" variant="neutral">
       {isAuthorized ? <UserIcon className="h-20 w-20" /> : <LogInIcon />}
     </Button>
   );

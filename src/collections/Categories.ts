@@ -1,12 +1,7 @@
 import type { CollectionConfig } from "payload";
 
 export const Category: CollectionConfig = {
-  slug: "categories",
-
   admin: {
-    useAsTitle: "name",
-    listSearchableFields: ["name", "slug", "color"],
-    defaultColumns: ["name", "parent", "color", "slug"],
     baseListFilter: () => {
       return {
         parent: {
@@ -14,16 +9,61 @@ export const Category: CollectionConfig = {
         },
       };
     },
+    defaultColumns: ["name", "parent", "color", "slug"],
+    listSearchableFields: ["name", "slug", "color"],
+    useAsTitle: "name",
   },
+  defaultSort: "name",
+  fields: [
+    {
+      name: "name",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "slug",
+      required: true,
+      type: "text",
+      unique: true,
+    },
+    {
+      admin: {
+        components: {
+          Field: "@/components/fields/color-picker.tsx",
+          Label: undefined,
+        },
+        condition: (data) => !data?.parent,
+      },
+      name: "color",
+
+      type: "text",
+    },
+    {
+      hasMany: false,
+      name: "parent",
+      relationTo: "categories",
+      type: "relationship",
+    },
+    {
+      admin: {
+        condition: (data) => !data?.parent,
+      },
+      collection: "categories",
+      hasMany: true,
+      name: "subCategories",
+      on: "parent",
+      type: "join",
+    },
+  ],
   hooks: {
     beforeChange: [
-      async ({ data, req, operation }) => {
+      async ({ data, operation, req }) => {
         if (operation === "create" && data?.parent) {
           try {
             const parentCategory = await req.payload.findByID({
               collection: "categories",
-              id: data.parent,
               depth: 0,
+              id: data.parent,
             });
 
             if (parentCategory?.color) {
@@ -38,45 +78,5 @@ export const Category: CollectionConfig = {
       },
     ],
   },
-  fields: [
-    {
-      name: "name",
-      type: "text",
-      required: true,
-    },
-    {
-      name: "slug",
-      type: "text",
-      required: true,
-      unique: true,
-    },
-    {
-      name: "color",
-      type: "text",
-
-      admin: {
-        components: {
-          Field: "@/components/fields/color-picker.tsx",
-          Label: undefined,
-        },
-        condition: (data) => !data?.parent,
-      },
-    },
-    {
-      name: "parent",
-      type: "relationship",
-      relationTo: "categories",
-      hasMany: false,
-    },
-    {
-      name: "subCategories",
-      type: "join",
-      collection: "categories",
-      on: "parent",
-      hasMany: true,
-      admin: {
-        condition: (data) => !data?.parent,
-      },
-    },
-  ],
+  slug: "categories",
 };

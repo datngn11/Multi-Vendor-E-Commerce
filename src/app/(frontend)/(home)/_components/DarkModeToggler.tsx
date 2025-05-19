@@ -12,7 +12,7 @@ export const DarkModeToggler = () => {
   };
 
   return (
-    <Button variant="neutral" onClick={toggleTheme} size="icon">
+    <Button onClick={toggleTheme} size="icon" variant="neutral">
       <MoonStarIcon className="dark:hidden" />
 
       <SunIcon className="hidden dark:block" />

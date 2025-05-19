@@ -1,8 +1,9 @@
+import { Category } from "@/payload-types";
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
-import { Category } from "@/payload-types";
-import { SearchBar } from "./SearchBar";
+
 import { CategoriesFilters } from "./CategoriesFilters";
+import { SearchBar } from "./SearchBar";
 
 export const SearchFilters = async () => {
   const payload = await getPayload({

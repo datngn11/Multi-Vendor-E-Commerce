@@ -1,9 +1,9 @@
-import { Logo } from "../Logo";
+import { Button } from "@/components/ui/button";
 
 import { DarkModeToggler } from "../DarkModeToggler";
-import { Navigation } from "./Navigation";
-import { Button } from "@/components/ui/button";
+import { Logo } from "../Logo";
 import { AuthButton } from "./AuthButton";
+import { Navigation } from "./Navigation";
 
 export const Header = () => {
   return (

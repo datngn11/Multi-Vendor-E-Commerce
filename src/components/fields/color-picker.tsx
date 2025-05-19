@@ -1,26 +1,26 @@
 "use client";
 
-import { HexColorPicker } from "react-colorful";
-import { useField } from "@payloadcms/ui";
-import { TextFieldClientComponent } from "payload";
-import { useEffect, useRef, useState } from "react";
-import { TextField } from "@payloadcms/ui";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useField } from "@payloadcms/ui";
+import { TextField } from "@payloadcms/ui";
+import { TextFieldClientComponent } from "payload";
+import { useEffect, useRef, useState } from "react";
+import { HexColorPicker } from "react-colorful";
 
 const ColorPickerInput: TextFieldClientComponent = ({
-  path,
   field,
+  path,
   ...props
 }) => {
-  const { value, setValue } = useField<string>({ path });
+  const { setValue, value } = useField<string>({ path });
 
   // Track internal color to reduce rapid re-renders
   const [color, setColor] = useState<string>(value);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceRef = useRef<null | ReturnType<typeof setTimeout>>(null);
 
   // Sync Payload field value → local state
   useEffect(() => {
@@ -62,7 +62,7 @@ const ColorPickerInput: TextFieldClientComponent = ({
           </PopoverContent>
         </Popover>
 
-        <TextField path={path} field={field} {...props} />
+        <TextField field={field} path={path} {...props} />
       </div>
     </div>
   );
