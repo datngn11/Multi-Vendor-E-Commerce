@@ -52,20 +52,24 @@ export const CategoriesDropdown = ({
       onMouseLeave={handleMouseLeave}
       ref={dropdownRef}
     >
-      <Button
-        className={cn(
-          "hover:border-foreground text-foreground relative rounded-full border-transparent bg-transparent",
-
-          isActive && !isNavigationHovered && "border-foreground",
-          isOpen && "border-foreground",
-        )}
-        ref={buttonRef}
-        variant="noShadow"
+      <Link
+        href={currentCategory.slug === "all" ? "/" : `/${currentCategory.slug}`}
       >
-        {currentCategory.name}
+        <Button
+          className={cn(
+            "hover:border-foreground text-foreground relative rounded-full border-transparent bg-transparent",
 
-        {Icon}
-      </Button>
+            isActive && !isNavigationHovered && "border-foreground",
+            isOpen && "border-foreground",
+          )}
+          ref={buttonRef}
+          variant="noShadow"
+        >
+          {currentCategory.name}
+
+          {Icon}
+        </Button>
+      </Link>
 
       {isOpen && (
         <SubcategoriesMenu
@@ -155,7 +159,11 @@ const SubcategoriesMenu = ({
           return (
             <Link
               className="flex w-full items-center p-4 text-left font-medium text-black underline hover:bg-[#e1e1cd]"
-              href={`/${subCategory.slug}`}
+              href={
+                subCategory.parent
+                  ? `${category.slug}/${subCategory.slug}`
+                  : `/${subCategory.slug}`
+              }
               key={subCategory.slug}
             >
               {subCategory.name}
