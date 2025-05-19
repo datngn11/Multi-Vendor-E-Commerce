@@ -5,7 +5,6 @@ import { useToggleState } from "@/hooks/useToggleState";
 import { cn } from "@/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 import { IRenderCategory } from "./CategoriesFilters";
@@ -27,7 +26,6 @@ export const CategoriesDropdown = ({
 }: IProps) => {
   const [currentCategory, setCurrentCategory] = useState(category);
   const { handleClose, handleOpen, isOpen } = useToggleState();
-  const router = useRouter();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -54,28 +52,24 @@ export const CategoriesDropdown = ({
       onMouseLeave={handleMouseLeave}
       ref={dropdownRef}
     >
-      <Button
-        className={cn(
-          "hover:border-foreground text-foreground relative rounded-full border-transparent bg-transparent",
-
-          isActive && !isNavigationHovered && "border-foreground",
-          isOpen && "border-foreground",
-        )}
-        onClick={() => {
-          console.log("HEllo");
-          if (currentCategory.slug === "all") {
-            router.push("/");
-          } else {
-            router.push(`/${currentCategory.slug}`);
-          }
-        }}
-        ref={buttonRef}
-        variant="noShadow"
+      <Link
+        href={currentCategory.slug === "all" ? "/" : `/${currentCategory.slug}`}
       >
-        {currentCategory.name}
+        <Button
+          className={cn(
+            "hover:border-foreground text-foreground relative rounded-full border-transparent bg-transparent",
 
-        {Icon}
-      </Button>
+            isActive && !isNavigationHovered && "border-foreground",
+            isOpen && "border-foreground",
+          )}
+          ref={buttonRef}
+          variant="noShadow"
+        >
+          {currentCategory.name}
+
+          {Icon}
+        </Button>
+      </Link>
 
       {isOpen && (
         <SubcategoriesMenu
