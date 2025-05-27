@@ -1,15 +1,16 @@
 "use client";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { useField } from "@payloadcms/ui";
 import { TextField } from "@payloadcms/ui";
 import { TextFieldClientComponent } from "payload";
 import { useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const ColorPickerInput: TextFieldClientComponent = ({
   field,

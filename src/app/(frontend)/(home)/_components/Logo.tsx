@@ -1,6 +1,7 @@
-import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
+
+import { cn } from "@/lib/utils";
 
 const poppins = Poppins({
   subsets: ["latin"],

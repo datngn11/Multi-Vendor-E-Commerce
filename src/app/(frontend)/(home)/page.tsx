@@ -1,13 +1,11 @@
-import { Button } from "@/components/ui/button";
 import { LayoutDashboardIcon } from "lucide-react";
 import Link from "next/link";
 
-import { SearchFilters } from "./_components/SearchFilters";
+import { Button } from "@/components/ui/button";
 
 const HomePage = async () => {
   return (
     <>
-      <SearchFilters />
       <div className="p-4 lg:px-12">
         <h1 className="text-center text-4xl font-bold">Welcome to VELÉLS</h1>
         <p className="text-center">
