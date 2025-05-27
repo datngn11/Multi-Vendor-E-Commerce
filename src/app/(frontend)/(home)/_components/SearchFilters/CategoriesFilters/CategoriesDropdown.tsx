@@ -23,7 +23,7 @@ export const CategoriesDropdown = ({
   buttonRef,
   category,
   Icon,
-  isActive = true,
+  isActive,
   isNavigationHovered = false,
 }: IProps) => {
   const [currentCategory, setCurrentCategory] =

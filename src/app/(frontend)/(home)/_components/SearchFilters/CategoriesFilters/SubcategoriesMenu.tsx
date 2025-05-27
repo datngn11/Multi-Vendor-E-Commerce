@@ -11,12 +11,12 @@ interface ISubcategoriesMenuProps {
 }
 
 const BACK_CATEGORY: DropdownCategory = {
-  createdAt: "",
+  createdAt: new Date().toISOString(),
   id: "back",
   name: "Back",
   slug: "back",
   subCategories: [],
-  updatedAt: "",
+  updatedAt: new Date().toISOString(),
 };
 
 export const SubcategoriesMenu = ({

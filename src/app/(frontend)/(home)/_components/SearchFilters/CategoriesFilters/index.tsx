@@ -25,7 +25,7 @@ export const CategoriesFilters = () => {
 
       // Reserve space for the "View More" button
       // and the gap between items
-      reserveSpace: viewMoreButtonWidth + categories?.length * 6,
+      reserveSpace: viewMoreButtonWidth + (categories?.length || 0) * 6,
     });
 
   const activeCategory = "all";
