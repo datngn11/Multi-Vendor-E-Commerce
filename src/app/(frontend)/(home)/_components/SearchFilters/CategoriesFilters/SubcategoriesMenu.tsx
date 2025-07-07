@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
-import { DropdownCategory } from "@/modules/categories/types";
+import { DropdownCategory } from "@/features/categories/types";
 
 interface ISubcategoriesMenuProps {
   category: DropdownCategory;
