@@ -174,6 +174,7 @@ const seed = async () => {
       data: {
         email: "admin@admin.com",
         password: "admin@admin.com",
+        username: "admin",
       },
     });
     console.log("Admin user created, email:" + adminUser.email);

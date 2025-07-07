@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import { Category } from "./collections/Categories";
 import { Media } from "./collections/Media";
 import { Users } from "./collections/Users";
+import { env } from "./configs/env";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -23,14 +24,14 @@ export default buildConfig({
   },
   collections: [Users, Media, Category],
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI || "",
+    url: env.MONGODB_URI,
   }),
   editor: lexicalEditor(),
   plugins: [
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-  secret: process.env.PAYLOAD_SECRET || "",
+  secret: env.PAYLOAD_SECRET,
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),

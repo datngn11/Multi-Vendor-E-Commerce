@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { DropdownCategory } from "@/features/categories/types";
 import { useDropdownPosition } from "@/hooks/useDropdownPosition";
 import { useToggleState } from "@/hooks/useToggleState";
 import { cn } from "@/lib/utils";
-import { DropdownCategory } from "@/modules/categories/types";
 
 import { SubcategoriesMenu } from "./SubcategoriesMenu";
 

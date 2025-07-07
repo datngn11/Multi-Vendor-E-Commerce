@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 
 import "@/styles/globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 import AppProviders from "./providers";
 
@@ -25,6 +26,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${dmSans.variable} antialiased`}>
         <AppProviders>{children}</AppProviders>
+
+        <Toaster richColors />
       </body>
     </html>
   );

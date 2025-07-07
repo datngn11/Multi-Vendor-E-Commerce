@@ -9,7 +9,7 @@ const poppins = Poppins({
 });
 
 export const Logo = () => (
-  <Link className="flex items-center" href="/">
+  <Link className="flex w-fit items-center" href="/">
     <span
       className={cn(
         "text-5xl font-semibold tracking-widest",

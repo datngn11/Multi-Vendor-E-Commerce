@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 
-export const DarkModeToggler = () => {
+export const ThemeToggler = () => {
   const { setTheme } = useTheme();
 
   const toggleTheme = () => {

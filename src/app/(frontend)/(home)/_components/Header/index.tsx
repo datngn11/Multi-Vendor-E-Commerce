@@ -1,7 +1,7 @@
+import { Logo } from "@/components/logo";
+import { ThemeToggler } from "@/components/theme-toggler";
 import { Button } from "@/components/ui/button";
 
-import { DarkModeToggler } from "../DarkModeToggler";
-import { Logo } from "../Logo";
 import { AuthButton } from "./AuthButton";
 import { Navigation } from "./Navigation";
 
@@ -13,7 +13,7 @@ export const Header = () => {
       <Navigation />
 
       <div className="flex items-center gap-4">
-        <DarkModeToggler />
+        <ThemeToggler />
 
         <AuthButton />
 
