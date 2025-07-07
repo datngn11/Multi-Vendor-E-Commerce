@@ -16,8 +16,6 @@ export const authRouter = createTRPCRouter({
       },
     });
 
-    console.log("Login data:", data);
-
     if (!data.token) {
       throw new TRPCError({
         code: "UNAUTHORIZED",
