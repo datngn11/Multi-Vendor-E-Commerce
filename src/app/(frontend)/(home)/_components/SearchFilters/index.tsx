@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { CategoriesFilters } from "./CategoriesFilters";
 import { SearchBar } from "./SearchBar";
 
-export const SearchFilters = async () => {
+export const SearchFilters = () => {
   return (
     <Suspense fallback={<SearchFiltersSkeleton />}>
       <div className="flex flex-col gap-4 border-b px-4 py-8 lg:px-12">

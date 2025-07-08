@@ -8,31 +8,32 @@ import { AUTH_TOKEN } from "../constants";
 
 export const authRouter = createTRPCRouter({
   login: baseProcedure.input(LoginSchema).mutation(async ({ ctx, input }) => {
-    const data = await ctx.payload.login({
-      collection: "users",
-      data: {
-        email: input.email,
-        password: input.password,
-      },
-    });
+    try {
+      const data = await ctx.payload.login({
+        collection: "users",
+        data: {
+          email: input.email,
+          password: input.password,
+        },
+      });
 
-    if (!data.token) {
+      if (data.token) {
+        (await cookies()).set({
+          httpOnly: true,
+          name: AUTH_TOKEN,
+          path: "/",
+          value: data.token,
+        });
+
+        return data;
+      }
+    } catch {
       throw new TRPCError({
         code: "UNAUTHORIZED",
         message: "Invalid email or password",
       });
     }
-
-    (await cookies()).set({
-      httpOnly: true,
-      name: AUTH_TOKEN,
-      path: "/",
-      value: data.token,
-    });
-
-    return data;
   }),
-
   logout: baseProcedure.mutation(async () => {
     (await cookies()).delete(AUTH_TOKEN);
   }),
