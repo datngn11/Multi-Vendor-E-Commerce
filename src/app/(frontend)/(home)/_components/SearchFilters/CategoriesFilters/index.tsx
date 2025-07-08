@@ -4,7 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { ChevronDownIcon } from "lucide-react";
 import { useRef } from "react";
 
-import { useOverflowItems } from "@/hooks/useOverflowItems";
+import { useOverflowItems } from "@/app/(frontend)/(home)/_components/SearchFilters/hooks/useOverflowItems";
 import { useTRPC } from "@/trpc/client";
 
 import { CategoriesDropdown } from "./CategoriesDropdown";

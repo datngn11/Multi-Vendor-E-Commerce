@@ -2,6 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
 import { DropdownCategory } from "@/features/categories/types";
+import { hasItems } from "@/utils";
 
 interface ISubcategoriesMenuProps {
   category: DropdownCategory;
@@ -50,13 +51,12 @@ export const SubcategoriesMenu = ({
       >
         {category.subCategories?.map((subCategory) => {
           if (
-            (subCategory.subCategories &&
-              subCategory.subCategories.length > 0) ||
+            hasItems(subCategory.subCategories) ||
             subCategory.slug === "back"
           ) {
             return (
               <div
-                className="flex w-full cursor-pointer items-center gap-2 p-4 text-left font-medium text-black underline hover:bg-[#e1e1cd]"
+                className="flex w-full cursor-pointer items-center gap-2 p-4 text-left font-medium text-black underline hover:bg-[#ffeec1]"
                 key={subCategory.slug}
                 onClick={handleCategoryClick(subCategory)}
               >
@@ -77,7 +77,7 @@ export const SubcategoriesMenu = ({
 
           return (
             <Link
-              className="flex w-full items-center p-4 text-left font-medium text-black underline hover:bg-[#e1e1cd]"
+              className="flex w-full items-center p-4 text-left font-medium text-black underline hover:bg-[#ffeec1]"
               href={
                 subCategory.parent
                   ? `${category.slug}/${subCategory.slug}`

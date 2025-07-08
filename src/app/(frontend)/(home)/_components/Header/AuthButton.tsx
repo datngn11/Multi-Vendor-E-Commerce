@@ -20,11 +20,11 @@ export const AuthButton = () => {
   return (
     <Button
       aria-label={auth?.user ? "Go to profile" : "Go to login"}
-      className="h-9 w-9 p-0"
       onClick={handleAuthClick}
+      size="icon"
       variant="neutral"
     >
-      {auth?.user ? <UserIcon className="h-20 w-20" /> : <LogInIcon />}
+      {auth?.user ? <UserIcon /> : <LogInIcon />}
     </Button>
   );
 };
