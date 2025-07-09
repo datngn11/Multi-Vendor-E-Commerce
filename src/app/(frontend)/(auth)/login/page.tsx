@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -24,14 +24,16 @@ import { LoginSchema } from "../schemas";
 const LoginPage = () => {
   const trpc = useTRPC();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { isPending, mutate: login } = useMutation(
     trpc.auth.login.mutationOptions({
       onError: (error) => {
         toast.error(error.message);
       },
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success("Login successful");
+        await queryClient.invalidateQueries(trpc.auth.session.queryOptions());
         router.push("/");
       },
     }),

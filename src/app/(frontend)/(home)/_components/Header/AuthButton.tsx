@@ -1,10 +1,17 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { LogInIcon, UserIcon } from "lucide-react";
+import { LayoutDashboardIcon, LogInIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { routes } from "@/configs/routes";
 import { useTRPC } from "@/trpc/client";
 
@@ -14,17 +21,38 @@ export const AuthButton = () => {
 
   const router = useRouter();
 
+  const isAuthenticated = !!auth?.user;
+
   const handleAuthClick = () =>
-    router.push(auth?.user ? routes.profile.path : routes.auth.login.path);
+    router.push(
+      isAuthenticated ? routes.dashboard.path : routes.auth.login.path,
+    );
 
   return (
-    <Button
-      aria-label={auth?.user ? "Go to profile" : "Go to login"}
-      onClick={handleAuthClick}
-      size="icon"
-      variant="neutral"
-    >
-      {auth?.user ? <UserIcon /> : <LogInIcon />}
-    </Button>
+    <>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              aria-label={isAuthenticated ? "Dashboard" : "Login"}
+              onClick={handleAuthClick}
+              size="icon"
+              variant="neutral"
+            >
+              {isAuthenticated ? <LayoutDashboardIcon /> : <LogInIcon />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="bg-primary">
+            <p>{isAuthenticated ? "Dashboard" : "Login"}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      {!isAuthenticated && (
+        <Button className="font-bold">
+          <Link href={routes.auth.register.path}>Get Started</Link>
+        </Button>
+      )}
+    </>
   );
 };

@@ -1,6 +1,5 @@
 import { Logo } from "@/components/logo";
 import { ThemeToggler } from "@/components/theme-toggler";
-import { Button } from "@/components/ui/button";
 
 import { Sidebar } from "../Sidebar";
 import { AuthButton } from "./AuthButton";
@@ -18,8 +17,6 @@ export const Header = () => {
           <ThemeToggler />
 
           <AuthButton />
-
-          <Button className="font-bold">Get Started</Button>
         </div>
 
         <Sidebar />
