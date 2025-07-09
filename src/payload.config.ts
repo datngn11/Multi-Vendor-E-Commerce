@@ -23,6 +23,7 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Media, Category],
+  cookiePrefix: "velels",
   db: mongooseAdapter({
     url: env.MONGODB_URI,
   }),

@@ -71,11 +71,4 @@ export const routes = {
     path: "/pricing",
     protected: false,
   } satisfies RouteConfig,
-
-  profile: {
-    buildPath: () => "/profile",
-    label: "Profile",
-    path: "/profile",
-    protected: true,
-  } satisfies RouteConfig,
 } as const;

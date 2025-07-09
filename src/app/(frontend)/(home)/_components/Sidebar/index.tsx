@@ -35,9 +35,8 @@ export const Sidebar = () => {
                 <Logo />
               </DialogTitle>
               <div className="flex items-center gap-3">
-                <AuthButton />
-
                 <ThemeToggler />
+                <AuthButton />
               </div>
             </div>
           </DrawerHeader>

@@ -1,10 +1,9 @@
 import { TRPCError } from "@trpc/server";
-import { cookies, headers as getHeaders } from "next/headers";
+import { headers as getHeaders } from "next/headers";
 
 import { LoginSchema, RegisterSchema } from "@/app/(frontend)/(auth)/schemas";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-
-import { AUTH_TOKEN } from "../constants";
+import { generateAuthCookie } from "@/utils/generateAuthCookie";
 
 export const authRouter = createTRPCRouter({
   login: baseProcedure.input(LoginSchema).mutation(async ({ ctx, input }) => {
@@ -18,10 +17,8 @@ export const authRouter = createTRPCRouter({
       });
 
       if (data.token) {
-        (await cookies()).set({
-          httpOnly: true,
-          name: AUTH_TOKEN,
-          path: "/",
+        await generateAuthCookie({
+          prefix: ctx.payload.config.cookiePrefix,
           value: data.token,
         });
 
@@ -33,9 +30,6 @@ export const authRouter = createTRPCRouter({
         message: "Invalid email or password",
       });
     }
-  }),
-  logout: baseProcedure.mutation(async () => {
-    (await cookies()).delete(AUTH_TOKEN);
   }),
 
   register: baseProcedure
@@ -91,10 +85,8 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      (await cookies()).set({
-        httpOnly: true,
-        name: AUTH_TOKEN,
-        path: "/",
+      await generateAuthCookie({
+        prefix: ctx.payload.config.cookiePrefix,
         value: data.token,
       });
 
