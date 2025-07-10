@@ -15,7 +15,7 @@ import {
 import { routes } from "@/configs/routes";
 import { useTRPC } from "@/trpc/client";
 
-export const AuthButton = () => {
+export const AuthButton = ({ withRegistration = true }) => {
   const trpc = useTRPC();
   const { data: auth } = useQuery(trpc.auth.session.queryOptions());
 
@@ -48,7 +48,7 @@ export const AuthButton = () => {
         </Tooltip>
       </TooltipProvider>
 
-      {!isAuthenticated && (
+      {!isAuthenticated && withRegistration && (
         <Button className="font-bold">
           <Link href={routes.auth.register.path}>Get Started</Link>
         </Button>

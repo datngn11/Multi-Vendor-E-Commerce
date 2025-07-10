@@ -65,6 +65,13 @@ export const routes = {
     protected: false,
   } satisfies RouteConfig,
 
+  library: {
+    buildPath: () => "/library",
+    label: "Library",
+    path: "/library",
+    protected: true,
+  } satisfies RouteConfig,
+
   pricing: {
     buildPath: () => "/pricing",
     label: "Pricing",
