@@ -5,10 +5,14 @@ interface IProps {
   value: string;
 }
 export const generateAuthCookie = async ({ prefix, value }: IProps) => {
-  (await cookies()).set({
-    httpOnly: true,
-    name: `${prefix}-token`,
-    path: "/",
-    value,
-  });
+  try {
+    (await cookies()).set({
+      httpOnly: true,
+      name: `${prefix}-token`,
+      path: "/",
+      value,
+    });
+  } catch (error) {
+    console.error("Failed to set auth cookie:", error);
+  }
 };
