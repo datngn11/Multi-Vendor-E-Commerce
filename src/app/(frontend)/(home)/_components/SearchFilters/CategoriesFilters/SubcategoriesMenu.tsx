@@ -6,37 +6,17 @@ import { hasItems } from "@/utils";
 
 interface ISubcategoriesMenuProps {
   category: DropdownCategory;
-  initialCategory: DropdownCategory;
+  handleCategoryClick: (subCategory: DropdownCategory) => () => void;
+  handleClose: () => void;
   position: { left: number; top: number };
-  setCurrentCategory: React.Dispatch<React.SetStateAction<DropdownCategory>>;
 }
-
-const BACK_CATEGORY: DropdownCategory = {
-  createdAt: new Date().toISOString(),
-  id: "back",
-  name: "Back",
-  slug: "back",
-  subCategories: [],
-  updatedAt: new Date().toISOString(),
-};
 
 export const SubcategoriesMenu = ({
   category,
-  initialCategory,
+  handleCategoryClick,
+  handleClose,
   position,
-  setCurrentCategory,
 }: ISubcategoriesMenuProps) => {
-  const handleCategoryClick = (subCategory: DropdownCategory) => () => {
-    if (subCategory.slug === "back") {
-      setCurrentCategory(initialCategory);
-    } else {
-      setCurrentCategory({
-        ...subCategory,
-        subCategories: [BACK_CATEGORY, ...(subCategory.subCategories ?? [])],
-      });
-    }
-  };
-
   return (
     <div
       className="fixed z-100"
@@ -80,10 +60,11 @@ export const SubcategoriesMenu = ({
               className="flex w-full items-center p-4 text-left font-medium text-black underline hover:bg-[#ffeec1]"
               href={
                 subCategory.parent
-                  ? `${category.slug}/${subCategory.slug}`
+                  ? `/${category.slug}/${subCategory.slug}`
                   : `/${subCategory.slug}`
               }
               key={subCategory.slug}
+              onClick={handleClose}
             >
               {subCategory.name}
             </Link>

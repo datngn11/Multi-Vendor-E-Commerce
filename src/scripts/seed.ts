@@ -17,9 +17,9 @@ export const categories = [
         name: "Entrepreneurship",
         slug: "entrepreneurship",
       },
-      { name: "Gigs & Side Projects", slug: "gigs-side-projects" },
+      { name: "Gigs & Side Projects", slug: "gigs-and-side-projects" },
       { name: "Investing", slug: "investing" },
-      { name: "Management & Leadership", slug: "management-leadership" },
+      { name: "Management & Leadership", slug: "management-and-leadership" },
       {
         name: "Marketing & Sales",
         slug: "marketing-sales",
@@ -54,6 +54,7 @@ export const categories = [
     ],
   },
   {
+    color: "#01d696",
     name: "Other",
     slug: "other",
   },

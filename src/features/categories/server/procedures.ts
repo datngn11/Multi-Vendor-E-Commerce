@@ -1,7 +1,41 @@
+import { TRPCError } from "@trpc/server";
+import z from "zod";
+
 import { Category } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
 export const categoriesRouter = createTRPCRouter({
+  getBySlug: baseProcedure
+    .input(
+      z.object({
+        slug: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const category = await ctx.payload.find({
+        collection: "categories",
+        where: {
+          slug: {
+            equals: input?.slug,
+          },
+        },
+      });
+
+      if (!category || !category.docs.length) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `Category with slug "${input?.slug}" not found`,
+        });
+      }
+
+      return category.docs.map((category) => ({
+        ...category,
+        subCategories: category.subCategories?.docs?.map((subCategory) => ({
+          ...(subCategory as Category),
+        })),
+      }))[0];
+    }),
+
   getMany: baseProcedure.query(async ({ ctx }) => {
     const categories = await ctx.payload.find({
       collection: "categories",
@@ -14,7 +48,7 @@ export const categoriesRouter = createTRPCRouter({
       },
     });
 
-    const formttedData =
+    const formattedData =
       categories.docs.map((category) => ({
         ...category,
 
@@ -26,6 +60,6 @@ export const categoriesRouter = createTRPCRouter({
           })) ?? [],
       })) ?? [];
 
-    return formttedData;
+    return formattedData;
   }),
 });

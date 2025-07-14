@@ -2,7 +2,8 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ChevronDownIcon } from "lucide-react";
-import { useRef } from "react";
+import { useParams } from "next/navigation";
+import { useRef, useState } from "react";
 
 import { useOverflowItems } from "@/app/(frontend)/(home)/_components/SearchFilters/hooks/useOverflowItems";
 import { useTRPC } from "@/trpc/client";
@@ -11,6 +12,12 @@ import { CategoriesDropdown } from "./CategoriesDropdown";
 
 export const CategoriesFilters = () => {
   const trpc = useTRPC();
+  const { slug } = useParams();
+  const activeCategoryParam = slug?.[0];
+
+  const [hoveredCategoryId, setHoveredCategoryId] = useState<null | string>(
+    null,
+  );
 
   const { data: categories = [] } = useSuspenseQuery(
     trpc.categories.getMany.queryOptions(),
@@ -28,9 +35,9 @@ export const CategoriesFilters = () => {
       reserveSpace: viewMoreButtonWidth + (categories?.length || 0) * 6,
     });
 
-  const activeCategory = "all";
+  const activeCategorySlug = activeCategoryParam || "all";
   const activeCategoryIndex = categories?.findIndex(
-    (category) => category.slug === activeCategory,
+    (category) => category.slug === activeCategorySlug,
   );
 
   const isActiveCategoryHidden =
@@ -41,15 +48,7 @@ export const CategoriesFilters = () => {
       className="relative flex min-h-10 w-full flex-nowrap items-center gap-1.5"
       ref={containerRef}
     >
-      <div
-        style={{
-          height: 0,
-          opacity: 0,
-          pointerEvents: "none",
-          position: "absolute",
-          visibility: "hidden",
-        }}
-      >
+      <div className="visibility-hidden pointer-events-none absolute h-0 opacity-0">
         {categories.map((el, i) => (
           <CategoriesDropdown
             buttonRef={(el) => {
@@ -64,9 +63,10 @@ export const CategoriesFilters = () => {
       {visibleItems.map((category) => (
         <CategoriesDropdown
           category={category}
-          isActive={activeCategory === category.slug}
-          isNavigationHovered={false}
+          isActive={activeCategorySlug === category.slug}
+          isNavigationHovered={hoveredCategoryId === category.id}
           key={category.id}
+          setHoveredCategoryId={setHoveredCategoryId}
         />
       ))}
 
@@ -84,7 +84,8 @@ export const CategoriesFilters = () => {
           }}
           Icon={<ChevronDownIcon />}
           isActive={isActiveCategoryHidden}
-          isNavigationHovered={false}
+          isNavigationHovered={hoveredCategoryId === "more"}
+          setHoveredCategoryId={setHoveredCategoryId}
         />
       )}
     </div>
