@@ -1,6 +1,6 @@
 interface IProps {
   params: Promise<{
-    slug: string;
+    slug?: string[];
   }>;
 }
 

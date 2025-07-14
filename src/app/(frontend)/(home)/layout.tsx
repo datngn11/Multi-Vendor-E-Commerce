@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { getQueryClient, HydrateClient, trpc } from "@/trpc/server";
+import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 
 import { Footer } from "./_components/Footer";
 import { Header } from "./_components/Header";
@@ -17,16 +17,12 @@ interface IProps {
 }
 
 const MainLayout = async ({ children, params }: IProps) => {
-  const queryClient = getQueryClient();
-
-  await Promise.all([
-    queryClient.prefetchQuery(trpc.categories.getMany.queryOptions()),
-    queryClient.prefetchQuery(
-      trpc.categories.getBySlug.queryOptions({
-        slug: params?.slug?.[0] || "all",
-      }),
-    ),
-  ]);
+  prefetch(trpc.categories.getMany.queryOptions());
+  prefetch(
+    trpc.categories.getBySlug.queryOptions({
+      slug: params?.slug?.[0] || "all",
+    }),
+  );
 
   return (
     <HydrateClient>
