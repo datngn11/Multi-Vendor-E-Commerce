@@ -1,24 +1,49 @@
-import { Suspense } from "react";
+"use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+
+import { useTRPC } from "@/trpc/client";
+
+import { CategoriesBreadcrumb } from "./CategoriesBreadcrumb";
 import { CategoriesFilters } from "./CategoriesFilters";
 import { SearchBar } from "./SearchBar";
 
 export const SearchFilters = () => {
+  const trpc = useTRPC();
+  const { slug } = useParams();
+  const [categorySlug] = slug || [];
+
+  const { data: category } = useSuspenseQuery(
+    trpc.categories.getBySlug.queryOptions({
+      slug: categorySlug || "all",
+    }),
+  );
+
+  const backgroundColor = category?.color ?? "transparent";
+
   return (
-    <Suspense fallback={<SearchFiltersSkeleton />}>
-      <div className="flex flex-col gap-4 border-b px-4 py-8 lg:px-12">
-        <SearchBar />
-        <CategoriesFilters />
-      </div>
-    </Suspense>
+    <div
+      className={"flex flex-col gap-4 border-b px-4 py-8 lg:px-12"}
+      style={{
+        backgroundColor,
+      }}
+    >
+      <SearchBar />
+
+      <CategoriesFilters />
+
+      {categorySlug && <CategoriesBreadcrumb />}
+    </div>
   );
 };
 
-const SearchFiltersSkeleton = () => {
+export const SearchFiltersSkeleton = () => {
   return (
     <div className="flex animate-pulse flex-col gap-4 border-b px-4 py-8 lg:px-12">
       <SearchBar disabled />
-      <div className="h-10 w-full animate-pulse rounded-md" />
+
+      <div className="h-21 w-full animate-pulse rounded-md" />
     </div>
   );
 };
