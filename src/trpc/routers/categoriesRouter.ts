@@ -40,6 +40,7 @@ export const categoriesRouter = createTRPCRouter({
     const categories = await ctx.payload.find({
       collection: "categories",
       depth: 1,
+      limit: 0,
       sort: "name",
       where: {
         parent: {

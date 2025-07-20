@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 
 import { Category } from "./collections/Categories";
 import { Media } from "./collections/Media";
+import { Product } from "./collections/Product";
 import { Users } from "./collections/Users";
 import { env } from "./configs/env";
 
@@ -22,7 +23,7 @@ export default buildConfig({
     },
     user: Users.slug,
   },
-  collections: [Users, Media, Category],
+  collections: [Users, Media, Category, Product],
   cookiePrefix: "velels",
   db: mongooseAdapter({
     url: env.MONGODB_URI,

@@ -16,7 +16,7 @@ export const Logo = () => (
         poppins.className,
       )}
     >
-      VELÉLS
+      PR
     </span>
   </Link>
 );

@@ -17,11 +17,11 @@ import { useTRPC } from "@/trpc/client";
 
 export const AuthButton = ({ withRegistration = true }) => {
   const trpc = useTRPC();
-  const { data: auth } = useQuery(trpc.auth.session.queryOptions());
+  const { data: session } = useQuery(trpc.auth.session.queryOptions());
 
   const router = useRouter();
 
-  const isAuthenticated = !!auth?.user;
+  const isAuthenticated = !!session?.user;
 
   const handleAuthClick = () =>
     router.push(
