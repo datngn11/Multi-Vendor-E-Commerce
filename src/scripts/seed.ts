@@ -4,6 +4,8 @@ import { getPayload } from "payload";
 import "dotenv/config";
 import { fileURLToPath } from "url"; // Import fileURLToPath
 
+import { Category } from "@/payload-types";
+
 import config from "../payload.config";
 
 // --- ESM equivalent of __dirname and __filename ---
@@ -151,7 +153,7 @@ const seed = async () => {
   });
 
   // --- Seed Categories ---
-  const createdCategories: { [slug: string]: any } = {}; // To store created category IDs for product linking
+  const createdCategories: { [slug: string]: Category } = {}; // To store created category IDs for product linking
   for (const category of categories) {
     const parentCategory = await payload.create({
       collection: "categories",
@@ -183,7 +185,14 @@ const seed = async () => {
   console.log("\nSeeding Products...");
 
   // Example products - you can add many more!
-  const products = [
+  const products: Array<{
+    categorySlug: string;
+    description: string;
+    imageFilename: string;
+    name: string;
+    price: number;
+    refundPolicy: "14Days" | "30Days" | "noRefunds";
+  }> = [
     {
       categorySlug: "entrepreneurship", // Link to a subCategory
       description:

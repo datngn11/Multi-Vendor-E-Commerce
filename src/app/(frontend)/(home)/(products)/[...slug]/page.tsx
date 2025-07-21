@@ -7,9 +7,7 @@ import {
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 
 interface IProps {
-  params: {
-    slug?: string[];
-  };
+  params: Promise<{ slug?: string[] }>;
 }
 
 const ProductsPage = async ({ params }: IProps) => {
@@ -26,13 +24,11 @@ const ProductsPage = async ({ params }: IProps) => {
   );
 
   return (
-    <>
-      <HydrateClient>
-        <Suspense fallback={<ProductsListSkeleton />}>
-          <ProductsList />
-        </Suspense>
-      </HydrateClient>
-    </>
+    <HydrateClient>
+      <Suspense fallback={<ProductsListSkeleton />}>
+        <ProductsList />
+      </Suspense>
+    </HydrateClient>
   );
 };
 
