@@ -427,24 +427,15 @@ const seed = async () => {
       continue;
     }
 
-    let imageId = null;
+    let imageId = "";
     if (productData.imageFilename) {
-      imageId = await uploadImage(productData.imageFilename);
+      imageId = (await uploadImage(productData.imageFilename)) || "";
       if (!imageId) {
         console.error(
           `ERROR: Product "${productData.name}" requires an image, but upload failed. Skipping this product.`,
         );
         continue; // Skip product creation if image upload fails and image is required
       }
-    } else {
-      console.warn(
-        `Product "${productData.name}" has no imageFilename specified.`,
-      );
-      // If image is required for Product, you'd want to handle this as an error too.
-      console.error(
-        `ERROR: Product "${productData.name}" requires an image, but no imageFilename was provided. Skipping this product.`,
-      );
-      continue;
     }
 
     try {

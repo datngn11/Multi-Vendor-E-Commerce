@@ -1,6 +1,5 @@
 import z from "zod";
 
-import { Media } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
 export const productsRouter = createTRPCRouter({
@@ -80,8 +79,8 @@ export const productsRouter = createTRPCRouter({
         description: product.description,
         id: product.id,
         image: {
-          alt: (product.image as Media)?.alt || "",
-          url: (product.image as Media)?.url || "",
+          alt: (typeof product.image === "object" && product.image?.alt) || "",
+          url: (typeof product.image === "object" && product.image?.url) || "",
         },
         name: product.name,
         price: product.price,
