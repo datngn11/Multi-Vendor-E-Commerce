@@ -25,10 +25,17 @@ export const SearchBar = ({ disabled }: IProps) => {
         placeholder="Search Products"
         startIcon={SearchIcon}
       />
+
       {session?.user && (
-        <Button className="rounded-sm bg-transparent py-6" variant="reverse">
-          <BookMarkedIcon />
-          <Link href={routes.library.path}>{routes.library.label}</Link>
+        <Button
+          asChild
+          className="rounded-sm bg-transparent py-6"
+          variant="reverse"
+        >
+          <Link href={routes.library.path}>
+            <BookMarkedIcon />
+            {routes.library.label}
+          </Link>
         </Button>
       )}
     </div>

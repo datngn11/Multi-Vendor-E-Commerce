@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 
 import { DM_Sans } from "next/font/google";
 
-import "@/styles/globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
 import AppProviders from "./providers";
+
+import "@/styles/globals.css";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -13,7 +14,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  description: "A simple and elegant design system",
+  description: "A simple and elegant platform",
   title: "VELÉLS",
 };
 

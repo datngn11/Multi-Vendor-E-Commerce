@@ -11,16 +11,16 @@ import {
 
 interface IProps {
   children: React.ReactNode;
-  params: {
-    slug?: string[];
-  };
+  params: Promise<{ slug?: string[] }>;
 }
 
 const MainLayout = async ({ children, params }: IProps) => {
+  const { slug } = await params;
+
   prefetch(trpc.categories.getMany.queryOptions());
   prefetch(
     trpc.categories.getBySlug.queryOptions({
-      slug: params?.slug?.[0] || "all",
+      slug: slug?.[0] || "all",
     }),
   );
 

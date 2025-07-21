@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { MouseEvent, useRef, useState } from "react";
+import { MouseEvent, useRef } from "react";
 
 import { useDropdownPosition } from "@/app/(frontend)/(home)/_components/SearchFilters/hooks/useDropdownPosition";
 import { Button } from "@/components/ui/button";
@@ -10,16 +10,8 @@ import { DropdownCategory } from "@/features/categories/types";
 import { useToggleState } from "@/hooks/useToggleState";
 import { cn } from "@/lib/utils";
 
+import { useCategoryNavigation } from "../hooks/useCategoryNavigation";
 import { SubcategoriesMenu } from "./SubcategoriesMenu";
-
-const BACK_CATEGORY: DropdownCategory = {
-  createdAt: new Date().toISOString(),
-  id: "back",
-  name: "Back",
-  slug: "back",
-  subCategories: [],
-  updatedAt: new Date().toISOString(),
-};
 
 interface IProps {
   buttonRef?: (element: HTMLButtonElement | null) => void;
@@ -41,51 +33,43 @@ export const CategoriesDropdown = ({
   const { slug } = useParams();
   const [categorySlug] = slug || [];
 
-  const [currentCategory, setCurrentCategory] =
-    useState<DropdownCategory>(category);
-
   const { handleClose, handleOpen, isOpen } = useToggleState();
+  const { currentCategory, navigateTo, reset } =
+    useCategoryNavigation(category);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-
   const dropdownPosition = useDropdownPosition(dropdownRef, isOpen);
+
+  const handleCategoryClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (category.id === "more") {
+      e.preventDefault(); // The "More" button itself doesn't navigate
+    } else {
+      handleClose(); // Close dropdown upon successful navigation
+    }
+  };
 
   const handleMouseEnter = () => {
     setHoveredCategoryId?.(category.id);
-    if (currentCategory.subCategories?.length) {
+    // Only open the dropdown if there are subcategories to show
+    if (category.subCategories?.length) {
       handleOpen();
     }
   };
 
   const handleMouseLeave = () => {
-    setCurrentCategory(category);
+    reset(); // Reset navigation state on leave
     setHoveredCategoryId?.(null);
     handleClose();
+  };
+
+  const handleDropdownCategoryClick = (subCategory: DropdownCategory) => () => {
+    navigateTo(subCategory);
   };
 
   // If category is "more", display its name, otherwise display the current category name
   // To prevent layout shift when category in "more" is selected
   const buttonDisplayName =
     category.id === "more" ? category.name : currentCategory.name;
-
-  const handleDropdownCategoryClick = (subCategory: DropdownCategory) => () => {
-    if (subCategory.slug === "back") {
-      setCurrentCategory(category);
-    } else {
-      setCurrentCategory({
-        ...subCategory,
-        subCategories: [BACK_CATEGORY, ...(subCategory.subCategories ?? [])],
-      });
-    }
-  };
-
-  const handleCategoryClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (category.slug === "more") {
-      e.preventDefault();
-    } else {
-      handleClose();
-    }
-  };
 
   return (
     <div
@@ -110,10 +94,10 @@ export const CategoriesDropdown = ({
             categorySlug && "text-primary-foreground",
           )}
           ref={buttonRef}
+          type="button"
           variant="noShadow"
         >
           {buttonDisplayName}
-
           {Icon}
         </Button>
       </Link>
@@ -124,6 +108,7 @@ export const CategoriesDropdown = ({
           handleCategoryClick={handleDropdownCategoryClick}
           handleClose={handleClose}
           position={dropdownPosition}
+          reset={reset}
         />
       )}
     </div>
