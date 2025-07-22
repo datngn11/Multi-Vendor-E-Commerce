@@ -7,8 +7,8 @@ import { MouseEvent, useRef } from "react";
 import { useDropdownPosition } from "@/app/(frontend)/(home)/_components/SearchFilters/hooks/useDropdownPosition";
 import { Button } from "@/components/ui/button";
 import { DropdownCategory } from "@/features/categories/types";
-import { useToggleState } from "@/hooks/useToggleState";
 import { cn } from "@/lib/utils";
+import { useToggleState } from "@/shared/hooks/useToggleState";
 
 import { useCategoryNavigation } from "../hooks/useCategoryNavigation";
 import { SubcategoriesMenu } from "./SubcategoriesMenu";

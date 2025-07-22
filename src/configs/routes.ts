@@ -1,10 +1,10 @@
-// import { generatePath } from "@/utils/generatePath";
+// import { generatePath } from "@/shard/utils/routing";
 
 export type RouteConfig<
   TParams extends Record<string, unknown> = Record<never, never>,
 > = {
   buildPath: (params: TParams) => string;
-
+  // generatePath: (params: TParams) => string;
   label?: string;
   path: string;
   protected?: boolean;

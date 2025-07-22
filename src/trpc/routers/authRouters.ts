@@ -2,8 +2,8 @@ import { TRPCError } from "@trpc/server";
 import { headers as getHeaders } from "next/headers";
 
 import { LoginSchema, RegisterSchema } from "@/app/(frontend)/(auth)/schemas";
+import { generateAuthCookie } from "@/shared/utils/auth";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { generateAuthCookie } from "@/utils/generateAuthCookie";
 
 export const authRouter = createTRPCRouter({
   login: baseProcedure.input(LoginSchema).mutation(async ({ ctx, input }) => {

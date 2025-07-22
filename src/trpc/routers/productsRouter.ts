@@ -17,10 +17,22 @@ export const productsRouter = createTRPCRouter({
     .input(
       z.object({
         categorySlug: z.string().optional(),
+        maxPrice: z.number().optional(),
+        minPrice: z.number().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { categorySlug } = input;
+      const { categorySlug, maxPrice, minPrice } = input;
+
+      const where: Record<string, unknown> = {};
+
+      if (minPrice) {
+        where.price = { gte: minPrice };
+      }
+
+      if (maxPrice) {
+        where.price = { lte: maxPrice };
+      }
 
       // 1. Fetch all categories to build the hierarchy in memory.
       // This is often more efficient than multiple DB calls for descendants.

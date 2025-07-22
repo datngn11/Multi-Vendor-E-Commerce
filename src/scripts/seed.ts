@@ -399,7 +399,7 @@ const seed = async () => {
       const mediaItem = await payload.create({
         collection: "media",
         data: {
-          alt: filename.split(".")[0], // Simple alt text from filename
+          alt: filename.split(".")?.[0] || "", // Simple alt text from filename
           // Other fields specific to your media collection data, if any
         },
         file: {

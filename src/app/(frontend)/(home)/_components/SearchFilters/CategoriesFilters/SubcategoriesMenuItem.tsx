@@ -2,7 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
 import { DropdownCategory } from "@/features/categories/types";
-import { hasItems } from "@/utils";
+import { hasItems } from "@/shared/utils/arrays";
 
 interface IMenuItemProps {
   item: DropdownCategory;

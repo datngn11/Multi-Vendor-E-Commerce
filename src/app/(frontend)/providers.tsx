@@ -1,4 +1,5 @@
 import { ThemeProvider } from "next-themes";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { TRPCReactProvider } from "@/trpc/client";
 
@@ -15,7 +16,7 @@ const AppProviders = ({ children }: IProps) => {
         disableTransitionOnChange
         enableSystem
       >
-        {children}
+        <NuqsAdapter>{children}</NuqsAdapter>
       </ThemeProvider>
     </TRPCReactProvider>
   );
