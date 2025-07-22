@@ -7,7 +7,7 @@ import { Navigation } from "./Navigation";
 
 export const Header = () => {
   return (
-    <header className="dark:bg-background flex h-20 items-center justify-between border-b bg-white px-6 font-medium">
+    <header className="bg-body-background flex h-20 items-center justify-between border-b px-6 font-medium">
       <Logo />
 
       <Navigation />

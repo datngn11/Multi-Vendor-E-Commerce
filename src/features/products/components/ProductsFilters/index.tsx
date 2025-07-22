@@ -15,7 +15,7 @@ export const ProductFilters = () => {
   const { filters, onFilterChange, resetFilters } = useProductsFilter();
 
   return (
-    <div className="rounded-md">
+    <div className="bg-background rounded-md">
       <div className="flex items-center justify-between border border-b-0 p-4">
         <span className="font-semibold">Filters</span>
 
