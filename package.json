@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:fresh": "payload migrate:fresh --force-accept-warning",
-    "db:generate": "payload migrate:generate",
+    "db:generate": "payload generate:types",
     "db:seed": "tsx src/scripts/seed.ts",
     "db:reset": "npm run db:fresh && npm run db:seed",
     "db:reset:local": "MONGODB_URI=mongodb://localhost:27017/velels npm run db:reset "

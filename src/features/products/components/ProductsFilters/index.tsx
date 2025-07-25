@@ -7,37 +7,44 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { hasActiveFilters } from "@/shared/utils/filtering";
 
-import { useProductsFilter } from "../../hooks/useProductsFilter";
+import { useProductQueryControl } from "./hooks/useProductsQueryControl";
 import { PriceFilter } from "./PriceFilter";
+import { TagsFilter } from "./TagsFilter";
 
 export const ProductFilters = () => {
-  const { filters, onFilterChange, resetFilters } = useProductsFilter();
+  const { onParamChange, params, resetFilters } = useProductQueryControl();
 
   return (
     <div className="bg-background rounded-md">
-      <div className="flex items-center justify-between border border-b-0 p-4">
+      <div className="flex h-16 items-center justify-between border border-b-0 p-4">
         <span className="font-semibold">Filters</span>
 
-        <Button
-          className="text-foreground"
-          onClick={resetFilters}
-          size="sm"
-          variant="link"
-        >
-          Clear
-        </Button>
+        {hasActiveFilters(params) && (
+          <Button
+            className="text-foreground"
+            onClick={resetFilters}
+            size="sm"
+            variant="link"
+          >
+            Clear
+          </Button>
+        )}
       </div>
 
-      <Accordion collapsible type="single">
+      <Accordion type="multiple">
         <ProductFilterItem title="Tags">
-          Yes. It adheres to the WAI-ARIA design pattern.
+          <TagsFilter
+            onParamChange={onParamChange}
+            selectedTags={params.tags}
+          />
         </ProductFilterItem>
         <ProductFilterItem title="Price">
           <PriceFilter
-            maxPrice={filters.maxPrice}
-            minPrice={filters.minPrice}
-            onFilterChange={onFilterChange}
+            maxPrice={params.maxPrice}
+            minPrice={params.minPrice}
+            onParamChange={onParamChange}
           />
         </ProductFilterItem>
         <ProductFilterItem title="Brands">
@@ -56,7 +63,7 @@ interface IProps {
 const ProductFilterItem = ({ children, title }: IProps) => {
   return (
     <AccordionItem className="last:border-b" value={title}>
-      <AccordionTrigger>{title}</AccordionTrigger>
+      <AccordionTrigger className="font-semibold">{title}</AccordionTrigger>
       <AccordionContent containerClassname="data-[state=open]:overflow-visible">
         {children}
       </AccordionContent>
