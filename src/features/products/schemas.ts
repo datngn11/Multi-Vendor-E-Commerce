@@ -28,7 +28,7 @@ export type FilterSchema = z.infer<typeof filterZodSchema>;
 export const filterZodSchema = z.object({
   maxPrice: z.string().optional().nullable(),
   minPrice: z.string().optional().nullable(),
-  tags: z.array(z.string()).optional(),
+  tags: z.array(z.string()).default([]),
 });
 
 /**

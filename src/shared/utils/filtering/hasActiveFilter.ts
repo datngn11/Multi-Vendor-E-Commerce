@@ -6,9 +6,8 @@
  */
 
 export const hasActiveFilters = (filters: Record<string, unknown>): boolean => {
-  delete filters.sort; // Exclude sort from active filters check
-
-  return Object.entries(filters).some(([, value]) => {
+  return Object.entries(filters).some(([key, value]) => {
+    if (key === "sort") return false;
     if (Array.isArray(value)) return value.length > 0;
     if (typeof value === "object" && value !== null)
       return Object.keys(value).length > 0;
