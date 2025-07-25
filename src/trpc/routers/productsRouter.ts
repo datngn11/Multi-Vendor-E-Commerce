@@ -1,5 +1,12 @@
+import { Sort, Where } from "payload";
 import z from "zod";
 
+import {
+  filterZodSchema,
+  SortValues,
+  sortZodSchema,
+} from "@/features/products/schemas";
+import { hasItems } from "@/shared/utils/arrays";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
 export const productsRouter = createTRPCRouter({
@@ -17,21 +24,44 @@ export const productsRouter = createTRPCRouter({
     .input(
       z.object({
         categorySlug: z.string().optional(),
-        maxPrice: z.number().optional(),
-        minPrice: z.number().optional(),
+        ...filterZodSchema.shape,
+        ...sortZodSchema.shape,
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { categorySlug, maxPrice, minPrice } = input;
+      const { categorySlug, maxPrice, minPrice, sort, tags } = input;
 
-      const where: Record<string, unknown> = {};
+      const where: Where = {};
+      let sortParam: Sort = "-createdAt";
 
+      /**
+       * Handle filtering
+       */
       if (minPrice) {
-        where.price = { gte: minPrice };
+        where.price = { ...(where.price || {}), greater_than_equal: minPrice };
+      }
+      if (maxPrice) {
+        where.price = { ...(where.price || {}), less_than_equal: maxPrice };
+      }
+      if (hasItems(tags)) {
+        where["tags.name"] = {
+          in: tags,
+        };
       }
 
-      if (maxPrice) {
-        where.price = { lte: maxPrice };
+      /**
+       * Handle sorting
+       */
+      switch (sort) {
+        case SortValues.Curated:
+          sortParam = "createdAt";
+          break;
+        case SortValues.Newest:
+          sortParam = "-createdAt";
+          break;
+        case SortValues.Trending:
+          sortParam = "name";
+          break;
       }
 
       // 1. Fetch all categories to build the hierarchy in memory.
@@ -75,27 +105,27 @@ export const productsRouter = createTRPCRouter({
         ...getAllDescendantIds(parentCategory.id),
       ];
 
+      where.category = {
+        in: allApplicableCategoryIds,
+      };
+
       // 5. Find all products where the category is in our list of IDs.
       const { docs: products } = await ctx.payload.find({
         collection: "products",
         depth: 1,
-        where: {
-          category: {
-            // Use the 'in' operator to match any ID in the array
-            in: allApplicableCategoryIds,
-          },
-        },
+        sort: sortParam,
+        where,
       });
 
-      return products.map((product) => ({
-        description: product.description,
-        id: product.id,
+      return products.map(({ description, id, image, name, price }) => ({
+        description,
+        id,
         image: {
-          alt: (typeof product.image === "object" && product.image?.alt) || "",
-          url: (typeof product.image === "object" && product.image?.url) || "",
+          alt: (typeof image === "object" && image?.alt) || "",
+          url: (typeof image === "object" && image?.url) || "",
         },
-        name: product.name,
-        price: product.price,
+        name,
+        price,
       }));
     }),
 });

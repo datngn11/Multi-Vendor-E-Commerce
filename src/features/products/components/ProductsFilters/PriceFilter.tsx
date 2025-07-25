@@ -4,18 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formatAsCurrency } from "@/shared/utils/numbers/formatAsCurrency";
 
-interface IProps {
-  maxPrice?: null | string;
-  minPrice?: null | string;
-  onFilterChange: (key: PriceFiltersKeys, value: string) => void;
+import { FilterSchema } from "../../schemas";
+
+interface IProps extends Pick<FilterSchema, "maxPrice" | "minPrice"> {
+  onParamChange: (key: PriceFiltersKeys, value: string) => void;
 }
 
-type PriceFiltersKeys = "maxPrice" | "minPrice";
+type PriceFiltersKeys = keyof Pick<FilterSchema, "maxPrice" | "minPrice">;
 
-export const PriceFilter = ({ maxPrice, minPrice, onFilterChange }: IProps) => {
+export const PriceFilter = ({ maxPrice, minPrice, onParamChange }: IProps) => {
   const handleFilterChange = (key: PriceFiltersKeys, value: string) => {
     const sanitizedValue = value.replace(/[^0-9.]+/g, "");
-    onFilterChange(key, sanitizedValue);
+    onParamChange(key, sanitizedValue);
   };
 
   return (

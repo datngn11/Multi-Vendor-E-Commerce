@@ -2,13 +2,14 @@ import type { CollectionConfig } from "payload";
 
 export const Product: CollectionConfig = {
   admin: {
-    defaultColumns: ["image", "name", "price", "category"],
+    defaultColumns: ["image", "name", "price", "category", "tags"],
     listSearchableFields: ["name", "price"],
     useAsTitle: "name",
   },
   defaultSort: "name",
   fields: [
     {
+      index: true,
       name: "name",
       required: true,
       type: "text",
@@ -28,6 +29,12 @@ export const Product: CollectionConfig = {
     {
       name: "category",
       relationTo: "categories",
+      type: "relationship",
+    },
+    {
+      hasMany: true,
+      name: "tags",
+      relationTo: "tags",
       type: "relationship",
     },
     {

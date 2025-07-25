@@ -1,0 +1,1 @@
+export { hasActiveFilters } from "./hasActiveFilter";

@@ -181,6 +181,37 @@ const seed = async () => {
     }
   }
 
+  // --- Seed Tags ---
+  console.log("\nSeeding Tags...");
+
+  const tagNames = [
+    "Beginner",
+    "Advanced",
+    "Digital",
+    "Creative",
+    "Productivity",
+    "Fitness",
+    "Finance",
+    "Photography",
+    "Design",
+    "Tech",
+  ];
+
+  const createdTags: Record<string, string> = {}; // name -> id
+
+  for (const name of tagNames) {
+    try {
+      const tag = await payload.create({
+        collection: "tags",
+        data: { name },
+      });
+      createdTags[name] = tag.id;
+      console.log(`Created tag: ${name}`);
+    } catch (err) {
+      console.error(`Failed to create tag: ${name}`, err);
+    }
+  }
+
   // --- Seed Products ---
   console.log("\nSeeding Products...");
 
@@ -438,6 +469,37 @@ const seed = async () => {
       }
     }
 
+    const assignedTagNames: string[] = [];
+
+    if (productData.name.toLowerCase().includes("beginner")) {
+      assignedTagNames.push("Beginner");
+    }
+    if (productData.name.toLowerCase().includes("advanced")) {
+      assignedTagNames.push("Advanced");
+    }
+    if (
+      productData.categorySlug.includes("design") ||
+      productData.categorySlug.includes("ui-ux")
+    ) {
+      assignedTagNames.push("Design");
+    }
+    if (productData.categorySlug.includes("fitness")) {
+      assignedTagNames.push("Fitness");
+    }
+    if (productData.categorySlug.includes("finance")) {
+      assignedTagNames.push("Finance");
+    }
+    if (productData.categorySlug.includes("photography")) {
+      assignedTagNames.push("Photography");
+    }
+    if (productData.categorySlug.includes("devops")) {
+      assignedTagNames.push("Tech");
+    }
+
+    const tagIds = assignedTagNames
+      .map((tagName) => createdTags[tagName] || "")
+      .filter(Boolean);
+
     try {
       await payload.create({
         collection: "products",
@@ -448,6 +510,7 @@ const seed = async () => {
           name: productData.name,
           price: productData.price,
           refundPolicy: productData.refundPolicy,
+          tags: tagIds,
         },
       });
       console.log(`Created product: ${productData.name}`);

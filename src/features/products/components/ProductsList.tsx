@@ -12,18 +12,24 @@ import {
 } from "@/components/ui/card";
 import { useTRPC } from "@/trpc/client";
 
+import { useProductQueryParams } from "./ProductsFilters/hooks/useProductQueryParams";
+
 interface IProps {
   slug?: string[];
 }
 
 export const ProductsList = ({ slug }: IProps) => {
+  const [categorySlug, subCategorySlug, subSubCategorySlug] = slug || [];
+
   const trpc = useTRPC();
 
-  const [categorySlug, subCategorySlug, subSubCategorySlug] = slug || [];
+  const [params] = useProductQueryParams();
 
   const { data: products } = useSuspenseQuery(
     trpc.products.getManyByCategorySlug.queryOptions({
       categorySlug: subSubCategorySlug || subCategorySlug || categorySlug,
+      ...params,
+      sort: params.sort,
     }),
   );
 
