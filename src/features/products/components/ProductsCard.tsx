@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import {
   Card,
@@ -20,10 +21,12 @@ interface IProps {
 }
 
 export const ProductsCard = ({ product }: IProps) => {
+  const router = useRouter();
+
   return (
     <Card
       className="shadow-0 cursor-pointer gap-0 border p-0 transition-shadow duration-200 ease-in-out hover:shadow-[4px_4px_0px_#fff]"
-      key={product.id}
+      onClick={() => router.push(`/products/${product.id}`)}
     >
       <CardHeader className="gap-0 rounded-t-md p-0">
         <div className="relative aspect-square h-full rounded-t-md">
@@ -37,18 +40,15 @@ export const ProductsCard = ({ product }: IProps) => {
           />
         </div>
       </CardHeader>
-
       <CardContent className="border-b-border flex flex-1 flex-col gap-2.5 border-t border-b border-t-white p-4">
-        <CardTitle className="font-semibol line-clamp-4 text-lg wrap-anywhere sm:text-xl">
+        <CardTitle className="line-clamp-4 text-lg font-semibold wrap-anywhere sm:text-xl">
           {product.name}
         </CardTitle>
         <CardDescription className="mt-auto flex flex-col gap-2">
           <Author name="Daniel Mac" size="lg" />
-
           <Rating rating={3.5} reviews={4} />
         </CardDescription>
       </CardContent>
-
       <CardFooter className="flex w-full items-center justify-between rounded-b-lg p-4">
         <Price price={product.price} />
       </CardFooter>
