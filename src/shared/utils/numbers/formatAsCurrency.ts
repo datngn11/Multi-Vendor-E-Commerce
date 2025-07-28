@@ -6,7 +6,10 @@
  *          If the input is not a valid number, it returns an empty string.
  */
 
-export const formatAsCurrency = (value: string) => {
+export const formatAsCurrency = (
+  value: string,
+  options?: Intl.NumberFormatOptions,
+) => {
   const numericValue = value.replace(/[^0-9.]+/g, "");
   const parts = numericValue.split(".");
 
@@ -24,5 +27,6 @@ export const formatAsCurrency = (value: string) => {
     maximumFractionDigits: 2,
     minimumFractionDigits: 0,
     style: "currency",
+    ...options,
   }).format(numberValue);
 };
