@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { Sort, Where } from "payload";
 import z from "zod";
 
@@ -6,6 +7,7 @@ import {
   SortValues,
   sortZodSchema,
 } from "@/features/products/schemas";
+import { DEFAULT_PRODUCTS_LIMIT } from "@/shared/constants";
 import { hasItems } from "@/shared/utils/arrays";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
@@ -24,6 +26,8 @@ export const productsRouter = createTRPCRouter({
     .input(
       z.object({
         categorySlug: z.string().optional(),
+        cursor: z.number().default(1),
+        limit: z.number().default(DEFAULT_PRODUCTS_LIMIT),
         ...filterZodSchema.shape,
         ...sortZodSchema.shape,
       }),
@@ -78,7 +82,10 @@ export const productsRouter = createTRPCRouter({
       );
 
       if (!parentCategory) {
-        return [];
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Category not found",
+        });
       }
 
       // 3. A recursive function to find all descendant category IDs.
@@ -110,22 +117,23 @@ export const productsRouter = createTRPCRouter({
       };
 
       // 5. Find all products where the category is in our list of IDs.
-      const { docs: products } = await ctx.payload.find({
+      const response = await ctx.payload.find({
         collection: "products",
         depth: 1,
+        limit: input.limit,
+        page: input.cursor,
         sort: sortParam,
         where,
       });
 
-      return products.map(({ description, id, image, name, price }) => ({
-        description,
-        id,
-        image: {
-          alt: (typeof image === "object" && image?.alt) || "",
-          url: (typeof image === "object" && image?.url) || "",
-        },
-        name,
-        price,
-      }));
+      return {
+        products: response.docs.map(({ id, image, name, price }) => ({
+          id,
+          image,
+          name,
+          price,
+        })),
+        ...response,
+      };
     }),
 });

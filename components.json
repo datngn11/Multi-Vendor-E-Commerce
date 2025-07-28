@@ -3,6 +3,7 @@
   "style": "new-york",
   "rsc": true,
   "tsx": true,
+  "path": "src/shared/components/ui",
   "tailwind": {
     "config": "",
     "css": "src/app/globals.css",
@@ -11,9 +12,9 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@/components",
+    "ui": "@/shared/components/ui",
+    "components": "@/shared/components",
     "utils": "@/lib/utils",
-    "ui": "@/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
