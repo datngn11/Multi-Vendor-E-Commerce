@@ -6,7 +6,7 @@ interface ISubcategoriesMenuProps {
   category: DropdownCategory;
   handleCategoryClick: (subCategory: DropdownCategory) => () => void;
   handleClose: () => void;
-  position: { left: number; top: number };
+  position: { left: number };
   reset: () => void;
 }
 
@@ -24,10 +24,10 @@ export const SubcategoriesMenu = ({
 
   return (
     <div
-      className="fixed z-100"
+      className="absolute z-100" // This remains `absolute`
       style={{
         left: position.left,
-        top: position.top,
+        top: "100%",
       }}
     >
       <div

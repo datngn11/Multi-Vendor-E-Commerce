@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const DEFAULT_DROPDOWN_WIDTH = 192;
 const DEFAULT_OFFSET = 16;
@@ -6,38 +6,62 @@ const DEFAULT_OFFSET = 16;
 /**
  * @description A custom hook that calculates the position of a dropdown
  *
- * @returns An object with:
- * - top: number - The top position of the dropdown
- * - left: number - The left position of the dropdown
- *
  * @param ref React ref to the element to calculate the position for
  * @param trigger Boolean to trigger the calculation
+ *
+ * @returns An object with:
+ * - left: number - The left position of the dropdown
  */
 
 export const useDropdownPosition = (
-  ref: React.RefObject<HTMLDivElement | null>,
+  ref: React.RefObject<HTMLDivElement | null>, // This ref is now on the parent (div.relative)
   trigger: boolean = false,
 ) => {
-  const [position, setPosition] = useState({ left: 0, top: 0 });
+  const [position, setPosition] = useState({ left: 0 });
 
-  useEffect(() => {
-    if (!ref.current || !trigger) return;
+  const calculatePosition = useCallback(() => {
+    if (!ref.current || !trigger) {
+      return;
+    }
 
-    const rect = ref.current.getBoundingClientRect();
-    let left = rect.left + window.scrollX;
-    const top = rect.bottom;
+    const parentRect = ref.current.getBoundingClientRect(); // Get the position of the parent `div.relative`
 
-    // If the dropdown goes beyond the right edge of the screen, align it to the right
-    if (left + DEFAULT_DROPDOWN_WIDTH > window.innerWidth) {
-      left = window.innerWidth - DEFAULT_DROPDOWN_WIDTH - DEFAULT_OFFSET;
+    let calculatedLeft = 0;
 
-      if (left < 0) {
-        left = DEFAULT_OFFSET;
+    // Calculate where the right edge of the dropdown would be in the viewport
+    // if it were aligned to the left of the parent.
+    const dropdownWouldBeRightEdgeInViewport =
+      parentRect.left + DEFAULT_DROPDOWN_WIDTH;
+
+    // Check if the dropdown would overflow the right edge of the screen
+    if (
+      dropdownWouldBeRightEdgeInViewport >
+      window.innerWidth - DEFAULT_OFFSET
+    ) {
+      // If it overflows, align the dropdown to the right edge of the parent instead.
+      calculatedLeft = parentRect.width - DEFAULT_DROPDOWN_WIDTH;
+
+      // Add a sanity check: ensure it doesn't go off-screen to the left if the parent is very narrow
+      // and close to the left edge.
+      if (parentRect.left + calculatedLeft < DEFAULT_OFFSET) {
+        calculatedLeft = 0;
       }
     }
 
-    setPosition({ left, top });
-  }, [ref.current, trigger]);
+    setPosition({
+      left: calculatedLeft,
+    });
+  }, [ref, trigger]);
+
+  useEffect(() => {
+    calculatePosition();
+
+    window.addEventListener("resize", calculatePosition);
+
+    return () => {
+      window.removeEventListener("resize", calculatePosition);
+    };
+  }, [calculatePosition]);
 
   return position;
 };
