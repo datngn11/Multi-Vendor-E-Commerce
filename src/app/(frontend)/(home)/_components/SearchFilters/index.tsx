@@ -12,7 +12,7 @@ import { SearchBar } from "./SearchBar";
 export const SearchFilters = () => {
   const trpc = useTRPC();
   const { slug } = useParams();
-  const [categorySlug] = slug || [];
+  const [categorySlug, subcategorySlug] = slug || [];
 
   const { data: category } = useSuspenseQuery(
     trpc.categories.getBySlug.queryOptions({
@@ -33,7 +33,12 @@ export const SearchFilters = () => {
 
       <CategoriesFilters />
 
-      {categorySlug && <CategoriesBreadcrumb />}
+      {categorySlug && category && (
+        <CategoriesBreadcrumb
+          category={category}
+          subcategorySlug={subcategorySlug}
+        />
+      )}
     </div>
   );
 };

@@ -8,9 +8,9 @@ export type CategoriesGetManyOutput =
 export type CategoriesGetManyOutputSingle = CategoriesGetManyOutput[number];
 
 // This type is used to support deeply nested categories in the dropdown
-export type DropdownCategory = Omit<
+export type FormattedCategory = Omit<
   CategoriesGetManyOutputSingle,
   "subCategories"
 > & {
-  subCategories?: DropdownCategory[];
+  subCategories?: FormattedCategory[];
 };

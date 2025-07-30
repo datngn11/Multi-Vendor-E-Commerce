@@ -1,10 +1,10 @@
-import { DropdownCategory } from "@/features/categories/types";
+import { FormattedCategory } from "@/features/categories/types";
 
 import { SubcategoriesMenuItem } from "./SubcategoriesMenuItem"; // Import the new component
 
 interface ISubcategoriesMenuProps {
-  category: DropdownCategory;
-  handleCategoryClick: (subCategory: DropdownCategory) => () => void;
+  category: FormattedCategory;
+  handleCategoryClick: (subCategory: FormattedCategory) => () => void;
   handleClose: () => void;
   position: { left: number };
   reset: () => void;
@@ -24,10 +24,9 @@ export const SubcategoriesMenu = ({
 
   return (
     <div
-      className="absolute z-100" // This remains `absolute`
+      className="absolute top-full z-100"
       style={{
-        left: position.left,
-        top: "100%",
+        ...position,
       }}
     >
       <div

@@ -6,7 +6,7 @@ import { MouseEvent, useRef } from "react";
 
 import { useDropdownPosition } from "@/app/(frontend)/(home)/_components/SearchFilters/hooks/useDropdownPosition";
 import { Button } from "@/components/ui/button";
-import { DropdownCategory } from "@/features/categories/types";
+import { FormattedCategory } from "@/features/categories/types";
 import { cn } from "@/lib/utils";
 import { useToggleState } from "@/shared/hooks/useToggleState";
 
@@ -15,7 +15,7 @@ import { SubcategoriesMenu } from "./SubcategoriesMenu";
 
 interface IProps {
   buttonRef?: (element: HTMLButtonElement | null) => void;
-  category: DropdownCategory;
+  category: FormattedCategory;
   Icon?: React.ReactNode;
   isActive?: boolean;
   isNavigationHovered?: boolean;
@@ -62,9 +62,10 @@ export const CategoriesDropdown = ({
     handleClose();
   };
 
-  const handleDropdownCategoryClick = (subCategory: DropdownCategory) => () => {
-    navigateTo(subCategory);
-  };
+  const handleFormattedCategoryClick =
+    (subCategory: FormattedCategory) => () => {
+      navigateTo(subCategory);
+    };
 
   // If category is "more", display its name, otherwise display the current category name
   // To prevent layout shift when category in "more" is selected
@@ -105,7 +106,7 @@ export const CategoriesDropdown = ({
       {isOpen && (
         <SubcategoriesMenu
           category={currentCategory}
-          handleCategoryClick={handleDropdownCategoryClick}
+          handleCategoryClick={handleFormattedCategoryClick}
           handleClose={handleClose}
           position={dropdownPosition}
           reset={reset}

@@ -1,11 +1,11 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
-import { DropdownCategory } from "@/features/categories/types";
+import { FormattedCategory } from "@/features/categories/types";
 import { hasItems } from "@/shared/utils/arrays";
 
 interface IMenuItemProps {
-  item: DropdownCategory;
+  item: FormattedCategory;
   onExpand: () => void;
   onNavigate: () => void;
   parentSlug: string;
@@ -34,7 +34,6 @@ export const SubcategoriesMenuItem = ({
     );
   }
 
-  // This is a final link
   const href = item.parent ? `/${parentSlug}/${item.slug}` : `/${item.slug}`;
 
   return (

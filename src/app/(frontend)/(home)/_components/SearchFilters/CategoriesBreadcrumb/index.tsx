@@ -1,8 +1,6 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 
 import {
   Breadcrumb,
@@ -12,20 +10,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { useTRPC } from "@/trpc/client";
+import { FormattedCategory } from "@/features/categories/types";
 
-export const CategoriesBreadcrumb = () => {
-  const { slug } = useParams();
-  const [categorySlug, subcategorySlug] = slug || [];
+interface IProps {
+  category?: FormattedCategory;
+  subcategorySlug?: string;
+}
 
-  const trpc = useTRPC();
-
-  const { data: category } = useSuspenseQuery(
-    trpc.categories.getBySlug.queryOptions({
-      slug: categorySlug || "all",
-    }),
-  );
-
+export const CategoriesBreadcrumb = ({ category, subcategorySlug }: IProps) => {
   const categoryName = category?.name || "All Categories";
   const subCategoryName = category?.subCategories?.find(
     (sub) => sub.slug === subcategorySlug,
@@ -37,7 +29,7 @@ export const CategoriesBreadcrumb = () => {
         <BreadcrumbItem className="text-primary-foreground text-xl">
           {subcategorySlug ? (
             <BreadcrumbLink asChild className="underline">
-              <Link href={`/${categorySlug}`}>{categoryName}</Link>
+              <Link href={`/${category?.slug}`}>{categoryName}</Link>
             </BreadcrumbLink>
           ) : (
             <BreadcrumbPage>{categoryName}</BreadcrumbPage>

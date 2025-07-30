@@ -2,10 +2,10 @@
 
 import { useCallback, useState } from "react";
 
-import { DropdownCategory } from "@/features/categories/types";
+import { FormattedCategory } from "@/features/categories/types";
 
 // A constant for the "Back" button to ensure type safety and consistency
-const BACK_CATEGORY: DropdownCategory = {
+const BACK_CATEGORY: FormattedCategory = {
   createdAt: new Date().toISOString(),
   id: "back",
   name: "Back",
@@ -24,7 +24,7 @@ const BACK_CATEGORY: DropdownCategory = {
  *         and a function to reset the navigation state.
  */
 
-export const useCategoryNavigation = (initialCategory: DropdownCategory) => {
+export const useCategoryNavigation = (initialCategory: FormattedCategory) => {
   const [currentCategory, setCurrentCategory] = useState(initialCategory);
 
   // Resets the navigation state to the initial category.
@@ -34,7 +34,7 @@ export const useCategoryNavigation = (initialCategory: DropdownCategory) => {
 
   // Navigates to a new category level or back to the initial level.
   const navigateTo = useCallback(
-    (nextCategory: DropdownCategory) => {
+    (nextCategory: FormattedCategory) => {
       if (nextCategory.id === "back") {
         setCurrentCategory(initialCategory);
       } else {

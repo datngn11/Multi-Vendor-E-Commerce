@@ -9,6 +9,7 @@ import {
   ProductsListSkeleton,
 } from "@/features/products/components/ProductsList";
 import { ProductsSort } from "@/features/products/components/ProductsSort";
+import { DEFAULT_PRODUCTS_LIMIT } from "@/shared/constants";
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 
 interface IProps {
@@ -22,12 +23,11 @@ const ProductsPage = async ({ params, searchParams }: IProps) => {
 
   const [categorySlug, subCategorySlug, subSubCategorySlug] = slug || [];
 
-  prefetch(trpc.categories.getMany.queryOptions());
-
   prefetch(
-    trpc.products.getManyByCategorySlug.queryOptions({
+    trpc.products.getManyByCategorySlug.infiniteQueryOptions({
       categorySlug: subSubCategorySlug || subCategorySlug || categorySlug,
       ...filters,
+      limit: DEFAULT_PRODUCTS_LIMIT,
     }),
   );
 

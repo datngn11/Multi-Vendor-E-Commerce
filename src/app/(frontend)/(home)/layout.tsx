@@ -18,6 +18,7 @@ const MainLayout = async ({ children, params }: IProps) => {
   const { slug } = await params;
 
   prefetch(trpc.categories.getMany.queryOptions());
+
   prefetch(
     trpc.categories.getBySlug.queryOptions({
       slug: slug?.[0] || "all",
