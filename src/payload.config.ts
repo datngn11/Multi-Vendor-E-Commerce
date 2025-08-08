@@ -42,9 +42,8 @@ export default buildConfig({
       tenantsArrayField: {
         includeDefaultField: false,
       },
-      userHasAccessToAllTenants: (user) => {
-        return !!user?.roles?.includes(UserRoles.SuperAdmin);
-      },
+      userHasAccessToAllTenants: (user) =>
+        Boolean(user?.roles?.includes(UserRoles.SuperAdmin)),
     }),
   ],
   secret: env.PAYLOAD_SECRET,

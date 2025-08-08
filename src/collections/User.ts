@@ -16,6 +16,15 @@ const defaultTenantArrayField = tenantsArrayField({
 });
 
 export const User: CollectionConfig = {
+  access: {
+    create: ({ req }) =>
+      !Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+    delete: ({ req }) =>
+      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+    read: () => true,
+    update: ({ req }) =>
+      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+  },
   admin: {
     useAsTitle: "email",
   },
@@ -31,7 +40,7 @@ export const User: CollectionConfig = {
       admin: {
         position: "sidebar",
       },
-      defaultValue: ["user"],
+      defaultValue: [UserRoles.User],
       hasMany: true,
       name: "roles",
       options: Object.values(UserRoles),

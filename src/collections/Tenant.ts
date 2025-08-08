@@ -1,6 +1,17 @@
 import { CollectionConfig } from "payload";
 
+import { UserRoles } from "@/shared/constants";
+
 export const Tenant: CollectionConfig = {
+  access: {
+    create: ({ req }) =>
+      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+    delete: ({ req }) =>
+      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+    read: () => true,
+    update: ({ req }) =>
+      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+  },
   admin: {
     useAsTitle: "slug",
   },

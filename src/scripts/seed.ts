@@ -157,13 +157,10 @@ const seed = async () => {
   const defaultTenant = await payload.create({
     collection: "tenants",
     data: {
-      createdAt: new Date().toISOString(),
-      id: "default-tenant",
       name: "Default Tenant",
       slug: "default",
       stripeAccountId: "stripe-test",
       stripeDetailsSubmitted: true, // Assuming this is true for the default tenant
-      updatedAt: new Date().toISOString(),
     },
   });
   console.log(`Created default tenant: ${defaultTenant.name}`);
