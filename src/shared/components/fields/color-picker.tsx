@@ -59,7 +59,6 @@ const ColorPickerInput: TextFieldClientComponent = ({
           </PopoverTrigger>
 
           <PopoverContent className="w-fit rounded-xl border border-[#8d8d8d] bg-[#222] p-0">
-            {/* @ts-expect-error - HexColorPicker is not a Payload component */}
             <HexColorPicker color={color} onChange={setColor} />
           </PopoverContent>
         </Popover>

@@ -5,10 +5,10 @@ import "dotenv/config";
 import { fileURLToPath } from "url"; // Import fileURLToPath
 
 import { Category } from "@/payload-types";
+import { UserRoles } from "@/shared/constants";
 
 import config from "../payload.config";
 
-// --- ESM equivalent of __dirname and __filename ---
 const currentFileUrl = import.meta.url;
 const __filename = fileURLToPath(currentFileUrl);
 const __dirname = path.dirname(__filename);
@@ -151,6 +151,19 @@ const seed = async () => {
   const payload = await getPayload({
     config,
   });
+
+  // --- Seed Tenant ---
+  console.log("\nSeeding Tenant...");
+  const defaultTenant = await payload.create({
+    collection: "tenants",
+    data: {
+      name: "Default Tenant",
+      slug: "default",
+      stripeAccountId: "stripe-test",
+      stripeDetailsSubmitted: true, // Assuming this is true for the default tenant
+    },
+  });
+  console.log(`Created default tenant: ${defaultTenant.name}`);
 
   // --- Seed Categories ---
   const createdCategories: { [slug: string]: Category } = {}; // To store created category IDs for product linking
@@ -511,6 +524,7 @@ const seed = async () => {
           price: productData.price,
           refundPolicy: productData.refundPolicy,
           tags: tagIds,
+          tenant: defaultTenant.id,
         },
       });
       console.log(`Created product: ${productData.name}`);
@@ -525,7 +539,8 @@ const seed = async () => {
       data: {
         email: "admin@admin.com",
         password: "admin@admin.com",
-        username: "Admin",
+        roles: [UserRoles.SuperAdmin, UserRoles.User],
+        username: "Super Admin",
       },
     });
     console.log("Admin user created, email:" + adminUser.email);

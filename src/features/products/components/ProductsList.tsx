@@ -23,7 +23,7 @@ export const ProductsList = ({ slug }: IProps) => {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSuspenseInfiniteQuery(
-      trpc.products.getManyByCategorySlug.infiniteQueryOptions(
+      trpc.products.getMany.infiniteQueryOptions(
         {
           categorySlug: subSubCategorySlug || subCategorySlug || categorySlug,
           ...params,
