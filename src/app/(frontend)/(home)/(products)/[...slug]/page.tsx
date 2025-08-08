@@ -24,7 +24,7 @@ const ProductsPage = async ({ params, searchParams }: IProps) => {
   const [categorySlug, subCategorySlug, subSubCategorySlug] = slug || [];
 
   prefetch(
-    trpc.products.getManyByCategorySlug.infiniteQueryOptions({
+    trpc.products.getMany.infiniteQueryOptions({
       categorySlug: subSubCategorySlug || subCategorySlug || categorySlug,
       ...filters,
       limit: DEFAULT_PRODUCTS_LIMIT,

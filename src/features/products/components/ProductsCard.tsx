@@ -45,7 +45,14 @@ export const ProductsCard = ({ product }: IProps) => {
           {product.name}
         </CardTitle>
         <CardDescription className="mt-auto flex flex-col gap-2">
-          <Author name="Daniel Mac" size="lg" />
+          <Author
+            name={
+              typeof product.tenant === "object" && product.tenant !== null
+                ? product.tenant.name
+                : ""
+            }
+            size="lg"
+          />
           <Rating rating={3.5} reviews={4} />
         </CardDescription>
       </CardContent>

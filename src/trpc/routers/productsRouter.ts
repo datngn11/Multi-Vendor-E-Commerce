@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import { Sort, Where } from "payload";
 import z from "zod";
 
@@ -12,17 +11,7 @@ import { hasItems } from "@/shared/utils/arrays";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
 export const productsRouter = createTRPCRouter({
-  getMany: baseProcedure.query(async ({ ctx }) => {
-    const products = await ctx.payload.find({
-      collection: "products",
-      depth: 1,
-      limit: 0,
-    });
-
-    return products;
-  }),
-
-  getManyByCategorySlug: baseProcedure
+  getMany: baseProcedure
     .input(
       z.object({
         categorySlug: z.string().optional(),
@@ -77,16 +66,16 @@ export const productsRouter = createTRPCRouter({
       });
 
       // 2. Find the initial parent category by its slug.
-      const parentCategory = allCategories.find(
-        ({ slug }) => slug === categorySlug,
-      );
+      const parentCategory = categorySlug
+        ? allCategories.find(({ slug }) => slug === categorySlug)
+        : null;
 
-      if (!parentCategory) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Category not found",
-        });
-      }
+      // if (!parentCategory) {
+      //   throw new TRPCError({
+      //     code: "NOT_FOUND",
+      //     message: "Category not found",
+      //   });
+      // }
 
       // 3. A recursive function to find all descendant category IDs.
       const getAllDescendantIds = (categoryId: string): string[] => {
@@ -107,14 +96,15 @@ export const productsRouter = createTRPCRouter({
       };
 
       // 4. Get all relevant category IDs (parent + all descendants).
-      const allApplicableCategoryIds = [
-        parentCategory.id,
-        ...getAllDescendantIds(parentCategory.id),
-      ];
+      const allApplicableCategoryIds = parentCategory
+        ? [parentCategory.id, ...getAllDescendantIds(parentCategory.id)]
+        : [];
 
-      where.category = {
-        in: allApplicableCategoryIds,
-      };
+      if (hasItems(allApplicableCategoryIds)) {
+        where.category = {
+          in: allApplicableCategoryIds,
+        };
+      }
 
       // 5. Find all products where the category is in our list of IDs.
       const response = await ctx.payload.find({
@@ -127,11 +117,12 @@ export const productsRouter = createTRPCRouter({
       });
 
       return {
-        products: response.docs.map(({ id, image, name, price }) => ({
+        products: response.docs.map(({ id, image, name, price, tenant }) => ({
           id,
           image,
           name,
           price,
+          tenant,
         })),
         ...response,
       };

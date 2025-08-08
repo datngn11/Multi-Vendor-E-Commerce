@@ -1,18 +1,21 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
+import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "path";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { fileURLToPath } from "url";
 
-import { Category } from "./collections/Categories";
+import { Category } from "./collections/Category";
 import { Media } from "./collections/Media";
 import { Product } from "./collections/Product";
-import { Tag } from "./collections/Tags";
-import { Users } from "./collections/Users";
+import { Tag } from "./collections/Tag";
+import { Tenant } from "./collections/Tenant";
+import { User } from "./collections/User";
 import { env } from "./configs/env";
+import { UserRoles } from "./shared/constants";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -22,9 +25,9 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    user: Users.slug,
+    user: User.slug,
   },
-  collections: [Users, Media, Category, Product, Tag],
+  collections: [User, Media, Category, Product, Tag, Tenant],
   cookiePrefix: "velels",
   db: mongooseAdapter({
     url: env.MONGODB_URI,
@@ -32,7 +35,17 @@ export default buildConfig({
   editor: lexicalEditor(),
   plugins: [
     payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    multiTenantPlugin({
+      collections: {
+        products: {},
+      },
+      tenantsArrayField: {
+        includeDefaultField: false,
+      },
+      userHasAccessToAllTenants: (user) => {
+        return !!user?.roles?.includes(UserRoles.SuperAdmin);
+      },
+    }),
   ],
   secret: env.PAYLOAD_SECRET,
   sharp,

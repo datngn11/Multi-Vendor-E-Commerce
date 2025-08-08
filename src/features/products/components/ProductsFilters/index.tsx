@@ -60,6 +60,11 @@ interface IProps {
   title: string;
 }
 
+/**
+ * Filter Item  component
+ *
+ */
+
 const ProductFilterItem = ({ children, title }: IProps) => {
   return (
     <AccordionItem className="last:border-b" value={title}>
@@ -68,5 +73,22 @@ const ProductFilterItem = ({ children, title }: IProps) => {
         {children}
       </AccordionContent>
     </AccordionItem>
+  );
+};
+
+/**
+ * Skeleton loader for the product filters component.
+ */
+
+export const ProductFiltersSkeleton = () => {
+  return (
+    <div className="flex animate-pulse flex-col gap-1">
+      {[...Array(4)].map((_, i) => (
+        <div
+          className="bg-secondary-background h-13.5 w-full rounded"
+          key={i}
+        />
+      ))}
+    </div>
   );
 };
