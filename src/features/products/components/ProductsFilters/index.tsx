@@ -61,10 +61,9 @@ interface IProps {
 }
 
 /**
- * Filter Item  component
- *
+ * Single filter group container used within the filters accordion.
+ * Renders a titled <AccordionItem> and its children.
  */
-
 const ProductFilterItem = ({ children, title }: IProps) => {
   return (
     <AccordionItem className="last:border-b" value={title}>
@@ -79,7 +78,6 @@ const ProductFilterItem = ({ children, title }: IProps) => {
 /**
  * Skeleton loader for the product filters component.
  */
-
 export const ProductFiltersSkeleton = () => {
   return (
     <div className="flex animate-pulse flex-col gap-1">

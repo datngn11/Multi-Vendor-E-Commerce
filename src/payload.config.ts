@@ -15,7 +15,7 @@ import { Tag } from "./collections/Tag";
 import { Tenant } from "./collections/Tenant";
 import { User } from "./collections/User";
 import { env } from "./configs/env";
-import { UserRoles } from "./shared/constants";
+import { isSuperAdmin } from "./shared/utils/auth";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -42,8 +42,7 @@ export default buildConfig({
       tenantsArrayField: {
         includeDefaultField: false,
       },
-      userHasAccessToAllTenants: (user) =>
-        Boolean(user?.roles?.includes(UserRoles.SuperAdmin)),
+      userHasAccessToAllTenants: (user) => isSuperAdmin(user),
     }),
   ],
   secret: env.PAYLOAD_SECRET,

@@ -38,7 +38,7 @@ export const ProductsList = ({ slug }: IProps) => {
 
   if (!data || data.pages?.[0]?.docs?.length === 0) {
     return (
-      <div className="bg-background border-border flex h-full w-full flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed">
+      <div className="bg-background border-border flex h-full w-full flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed p-4">
         <InboxIcon />
         <p className="font-medium">No products found.</p>
       </div>

@@ -46,7 +46,10 @@ export const ProductsSort = () => {
 
 export const ProductsSortSkeleton = () => {
   return (
-    <div className="flex animate-pulse flex-col justify-between gap-y-2 sm:flex-row lg:items-center lg:gap-y-0">
+    <div
+      aria-hidden="true"
+      className="flex animate-pulse flex-col justify-between gap-y-2 sm:flex-row lg:items-center lg:gap-y-0"
+    >
       <div className="bg-secondary-background h-8 w-56 rounded" />
 
       <div className="flex items-center gap-2">
