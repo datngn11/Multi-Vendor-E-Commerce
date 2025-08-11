@@ -36,7 +36,7 @@ export const ProductsCard = ({ product }: IProps) => {
             fill
             src={
               (typeof product.image === "object" && product.image?.url) ||
-              "image-placeholder.png"
+              "/images/image-placeholder.png"
             }
           />
         </div>
