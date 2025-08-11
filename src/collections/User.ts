@@ -3,6 +3,7 @@ import type { CollectionConfig } from "payload";
 import { tenantsArrayField } from "@payloadcms/plugin-multi-tenant/fields";
 
 import { UserRoles } from "@/shared/constants";
+import { isSuperAdmin } from "@/shared/utils/auth";
 
 const defaultTenantArrayField = tenantsArrayField({
   arrayFieldAccess: {
@@ -17,13 +18,10 @@ const defaultTenantArrayField = tenantsArrayField({
 
 export const User: CollectionConfig = {
   access: {
-    create: ({ req }) =>
-      !Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
-    delete: ({ req }) =>
-      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+    create: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
     read: () => true,
-    update: ({ req }) =>
-      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+    update: ({ req }) => isSuperAdmin(req.user),
   },
   admin: {
     useAsTitle: "email",

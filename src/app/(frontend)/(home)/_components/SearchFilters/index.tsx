@@ -48,7 +48,7 @@ export const SearchFiltersSkeleton = () => {
     <div className="flex animate-pulse flex-col gap-4 border-b px-4 py-8 lg:px-12">
       <SearchBar disabled />
 
-      <div className="h-10 w-full animate-pulse rounded-md" />
+      <div className="h-10 w-full rounded-md" />
     </div>
   );
 };

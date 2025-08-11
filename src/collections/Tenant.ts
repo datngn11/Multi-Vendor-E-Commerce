@@ -1,16 +1,13 @@
 import { CollectionConfig } from "payload";
 
-import { UserRoles } from "@/shared/constants";
+import { isSuperAdmin } from "@/shared/utils/auth";
 
 export const Tenant: CollectionConfig = {
   access: {
-    create: ({ req }) =>
-      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
-    delete: ({ req }) =>
-      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+    create: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
     read: () => true,
-    update: ({ req }) =>
-      Boolean(req.user?.roles?.includes(UserRoles.SuperAdmin)),
+    update: ({ req }) => isSuperAdmin(req.user),
   },
   admin: {
     useAsTitle: "slug",
@@ -52,6 +49,7 @@ export const Tenant: CollectionConfig = {
         description: "Stripe details required for creating products",
         readOnly: true,
       },
+      defaultValue: false,
       name: "stripeDetailsSubmitted",
       type: "checkbox",
     },

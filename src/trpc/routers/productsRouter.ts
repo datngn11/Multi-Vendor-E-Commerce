@@ -27,15 +27,17 @@ export const productsRouter = createTRPCRouter({
       const where: Where = {};
       let sortParam: Sort = "-createdAt";
 
+      console.log(minPrice, maxPrice);
       /**
        * Handle filtering
        */
-      if (minPrice) {
-        where.price = { ...(where.price || {}), greater_than_equal: minPrice };
+      if (minPrice !== null || maxPrice !== null) {
+        where.price = {
+          ...(minPrice !== null && { greater_than_equal: minPrice }),
+          ...(maxPrice !== null && { less_than_equal: maxPrice }),
+        };
       }
-      if (maxPrice) {
-        where.price = { ...(where.price || {}), less_than_equal: maxPrice };
-      }
+
       if (hasItems(tags)) {
         where["tags.name"] = {
           in: tags,

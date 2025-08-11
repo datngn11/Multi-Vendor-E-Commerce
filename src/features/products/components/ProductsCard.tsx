@@ -35,7 +35,8 @@ export const ProductsCard = ({ product }: IProps) => {
             className="rounded-t-md object-cover"
             fill
             src={
-              (typeof product.image === "object" && product.image?.url) || ""
+              (typeof product.image === "object" && product.image?.url) ||
+              "/images/image-placeholder.png"
             }
           />
         </div>

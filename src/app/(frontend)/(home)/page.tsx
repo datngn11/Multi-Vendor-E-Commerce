@@ -14,7 +14,7 @@ import {
 } from "@/features/products/components/ProductsSort";
 import { HydrateClient } from "@/trpc/server";
 
-const HomePage = async () => {
+const HomePage = () => {
   return (
     <HydrateClient>
       <div className="px-4 py-20 lg:px-12">
