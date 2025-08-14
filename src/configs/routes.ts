@@ -1,4 +1,4 @@
-// import { generatePath } from "@/shard/utils/routing";
+import { generatePath } from "@/shared/utils/routing";
 
 export type RouteConfig<
   TParams extends Record<string, unknown> = Record<never, never>,
@@ -78,4 +78,12 @@ export const routes = {
     path: "/pricing",
     protected: false,
   } satisfies RouteConfig,
+
+  tenants: {
+    buildPath: ({ slug }: { slug: string }) =>
+      generatePath("/tenants/:slug", { slug }),
+    label: "Tenant",
+    path: "/tenants/:slug",
+    protected: true,
+  } satisfies RouteConfig<{ slug: string }>,
 } as const;
