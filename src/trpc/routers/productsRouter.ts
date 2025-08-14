@@ -6,6 +6,7 @@ import {
   SortValues,
   sortZodSchema,
 } from "@/features/products/schemas";
+import { Media, Tenant } from "@/payload-types";
 import { DEFAULT_PRODUCTS_LIMIT } from "@/shared/constants";
 import { hasItems } from "@/shared/utils/arrays";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
@@ -17,17 +18,18 @@ export const productsRouter = createTRPCRouter({
         categorySlug: z.string().optional(),
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_PRODUCTS_LIMIT),
+        tenantSlug: z.string().optional(),
         ...filterZodSchema.shape,
         ...sortZodSchema.shape,
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { categorySlug, maxPrice, minPrice, sort, tags } = input;
+      const { categorySlug, maxPrice, minPrice, sort, tags, tenantSlug } =
+        input;
 
       const where: Where = {};
       let sortParam: Sort = "-createdAt";
 
-      console.log(minPrice, maxPrice);
       /**
        * Handle filtering
        */
@@ -108,10 +110,16 @@ export const productsRouter = createTRPCRouter({
         };
       }
 
+      if (tenantSlug) {
+        where["tenant.slug"] = {
+          equals: tenantSlug,
+        };
+      }
+
       // 5. Find all products where the category is in our list of IDs.
       const response = await ctx.payload.find({
         collection: "products",
-        depth: 1,
+        depth: 2,
         limit: input.limit,
         page: input.cursor,
         sort: sortParam,
@@ -121,10 +129,13 @@ export const productsRouter = createTRPCRouter({
       return {
         products: response.docs.map(({ id, image, name, price, tenant }) => ({
           id,
-          image,
+          image: image as Media,
           name,
           price,
-          tenant,
+          tenant: {
+            ...(tenant as Tenant),
+            image: (tenant as Tenant).image as Media | null,
+          },
         })),
         ...response,
       };
