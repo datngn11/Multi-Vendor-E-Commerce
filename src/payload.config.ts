@@ -15,6 +15,7 @@ import { Tag } from "./collections/Tag";
 import { Tenant } from "./collections/Tenant";
 import { User } from "./collections/User";
 import { env } from "./configs/env";
+import { Config } from "./payload-types";
 import { isSuperAdmin } from "./shared/utils/auth";
 
 const filename = fileURLToPath(import.meta.url);
@@ -35,7 +36,7 @@ export default buildConfig({
   editor: lexicalEditor(),
   plugins: [
     payloadCloudPlugin(),
-    multiTenantPlugin({
+    multiTenantPlugin<Config>({
       collections: {
         products: {},
       },

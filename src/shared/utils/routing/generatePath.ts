@@ -38,5 +38,6 @@ export const generatePath = <
   }
 
   const queryString = searchParams.toString();
+
   return queryString ? `${path}?${queryString}` : path;
 };

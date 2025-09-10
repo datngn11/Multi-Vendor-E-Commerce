@@ -11,13 +11,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Product } from "@/payload-types";
 import { Author } from "@/shared/components/author";
 import { Price } from "@/shared/components/price";
 import { Rating } from "@/shared/components/rating";
 
+import { PopulatedProduct } from "../../types";
+
 interface IProps {
-  product: Omit<Product, "createdAt" | "updatedAt">;
+  product: PopulatedProduct;
 }
 
 export const ProductsCard = ({ product }: IProps) => {
@@ -34,10 +35,7 @@ export const ProductsCard = ({ product }: IProps) => {
             alt={product.name}
             className="rounded-t-md object-cover"
             fill
-            src={
-              (typeof product.image === "object" && product.image?.url) ||
-              "/images/image-placeholder.png"
-            }
+            src={product.image?.url || "/images/image-placeholder.png"}
           />
         </div>
       </CardHeader>
@@ -47,12 +45,10 @@ export const ProductsCard = ({ product }: IProps) => {
         </CardTitle>
         <CardDescription className="mt-auto flex flex-col gap-2">
           <Author
-            name={
-              typeof product.tenant === "object" && product.tenant !== null
-                ? product.tenant.name
-                : ""
-            }
-            size="lg"
+            avatar={product.tenant.image?.url}
+            name={product.tenant?.name}
+            size="sm"
+            tenantSlug={product.tenant.slug}
           />
           <Rating rating={3.5} reviews={4} />
         </CardDescription>
