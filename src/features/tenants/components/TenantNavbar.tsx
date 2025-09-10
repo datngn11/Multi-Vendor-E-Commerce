@@ -13,9 +13,10 @@ export const TenantNavbar = ({ tenantSlug }: IProps) => {
   const trpc = useTRPC();
 
   const { data: tenant } = useQuery(
-    trpc.tenants.getBySlug.queryOptions({
-      slug: tenantSlug,
-    })
+    trpc.tenants.getBySlug.queryOptions(
+      { slug: tenantSlug },
+      { enabled: !!tenantSlug }
+    )
   );
 
   if (!tenantSlug) return null;

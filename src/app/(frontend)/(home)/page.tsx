@@ -21,7 +21,7 @@ const HomePage = async ({ params, searchParams }: IProps) => {
       categorySlug: subSubCategorySlug || subCategorySlug || categorySlug,
       ...filters,
       limit: DEFAULT_PRODUCTS_LIMIT,
-    }),
+    })
   );
 
   return (
