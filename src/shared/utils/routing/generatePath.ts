@@ -12,19 +12,22 @@
  * // returns "/users/123?search=test"
  */
 
+import { Route } from "next";
+
 export const generatePath = <
   TPathParams extends Record<string, boolean | number | string>,
 >(
-  path: string,
+  path: Route,
   pathParams: TPathParams,
-  queryParams?: Record<string, boolean | null | number | string | undefined>,
-): string => {
+  queryParams?: Record<string, boolean | null | number | string | undefined>
+): Route => {
   // Replace :params in path with actual values
   for (const key in pathParams) {
     const value = pathParams[key];
-    path = path.replace(`:${key}`, encodeURIComponent(String(value)));
+    path = path.replace(`:${key}`, encodeURIComponent(String(value))) as Route;
   }
 
+  console.log({ path });
   // If no query params, return path as is
   if (!queryParams) return path;
 
@@ -39,5 +42,5 @@ export const generatePath = <
 
   const queryString = searchParams.toString();
 
-  return queryString ? `${path}?${queryString}` : path;
+  return `${path}?${queryString}`;
 };

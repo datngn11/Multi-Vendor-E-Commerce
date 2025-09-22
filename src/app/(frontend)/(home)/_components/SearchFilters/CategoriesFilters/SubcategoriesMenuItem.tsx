@@ -1,6 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
+import { routes } from "@/configs/routes";
 import { FormattedCategory } from "@/features/categories/types";
 import { hasItems } from "@/shared/utils/arrays";
 
@@ -34,10 +35,12 @@ export const SubcategoriesMenuItem = ({
     );
   }
 
-  const href = item.parent ? `/${parentSlug}/${item.slug}` : `/${item.slug}`;
-
   return (
-    <Link className={baseClasses} href={href} onClick={onNavigate}>
+    <Link
+      className={baseClasses}
+      href={routes.home.category.buildPath({ parentSlug, slug: item.slug })}
+      onClick={onNavigate}
+    >
       {item.name}
     </Link>
   );
