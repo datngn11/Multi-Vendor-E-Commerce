@@ -3,20 +3,20 @@
   "style": "new-york",
   "rsc": true,
   "tsx": true,
-  "path": "src/shared/components/ui",
   "tailwind": {
-    "config": "",
-    "css": "src/app/globals.css",
+    "config": "tailwind.config.ts",
+    "css": "src/app/styles/globals.css",
     "baseColor": "zinc",
     "cssVariables": true,
     "prefix": ""
   },
+  "iconLibrary": "lucide",
   "aliases": {
-    "ui": "@/shared/components/ui",
-    "components": "@/shared/components",
+    "components": "@/components",
     "utils": "@/lib/utils",
+    "ui": "@/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "registries": {}
 }

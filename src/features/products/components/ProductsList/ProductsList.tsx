@@ -15,9 +15,15 @@ interface IProps {
   narrowView?: boolean;
   slug?: string[];
   tenantSlug?: string;
+  tenantView?: boolean;
 }
 
-export const ProductsList = ({ narrowView, slug, tenantSlug }: IProps) => {
+export const ProductsList = ({
+  narrowView,
+  slug,
+  tenantSlug,
+  tenantView,
+}: IProps) => {
   const [categorySlug, subCategorySlug, subSubCategorySlug] = slug || [];
 
   const trpc = useTRPC();
@@ -58,7 +64,12 @@ export const ProductsList = ({ narrowView, slug, tenantSlug }: IProps) => {
       >
         {data?.pages.map((page) =>
           page.products?.map((product) => (
-            <ProductsCard key={product.id} product={product} />
+            <ProductsCard
+              key={product.id}
+              product={product}
+              tenantSlug={tenantSlug}
+              tenantView={tenantView}
+            />
           ))
         )}
       </div>

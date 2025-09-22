@@ -11,12 +11,14 @@ interface IProps {
   narrowView?: boolean;
   slug?: string[];
   tenantSlug?: string;
+  tenantView?: boolean;
 }
 
 export const ProductBrowseLayout = ({
   narrowView = false,
   slug,
   tenantSlug,
+  tenantView = false,
 }: IProps) => {
   return (
     <div className="flex flex-col gap-4 px-4 py-8 lg:px-12">
@@ -37,6 +39,7 @@ export const ProductBrowseLayout = ({
               narrowView={narrowView}
               slug={slug}
               tenantSlug={tenantSlug}
+              tenantView={tenantView}
             />
           </Suspense>
         </div>

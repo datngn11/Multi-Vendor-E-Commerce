@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { routes } from "@/configs/routes";
 import { Author } from "@/shared/components/author";
 import { Price } from "@/shared/components/price";
 import { Rating } from "@/shared/components/rating";
@@ -19,15 +20,28 @@ import { PopulatedProduct } from "../../types";
 
 interface IProps {
   product: PopulatedProduct;
+  tenantSlug?: string;
+  tenantView?: boolean;
 }
 
-export const ProductsCard = ({ product }: IProps) => {
+export const ProductsCard = ({ product, tenantSlug, tenantView }: IProps) => {
   const router = useRouter();
+
+  const handleCardClick = () => {
+    if (tenantView && tenantSlug) {
+      router.push(
+        routes.tenants.product.buildPath({
+          productId: product.id,
+          tenantSlug,
+        })
+      );
+    }
+  };
 
   return (
     <Card
       className="shadow-0 cursor-pointer gap-0 border p-0 transition-shadow duration-200 ease-in-out hover:shadow-[4px_4px_0px_#fff]"
-      onClick={() => router.push(`/products/${product.id}`)}
+      onClick={handleCardClick}
     >
       <CardHeader className="gap-0 rounded-t-md p-0">
         <div className="relative aspect-square h-full rounded-t-md">

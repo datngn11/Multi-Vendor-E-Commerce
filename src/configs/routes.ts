@@ -4,7 +4,6 @@ export type RouteConfig<
   TParams extends Record<string, unknown> = Record<never, never>,
 > = {
   buildPath: (params: TParams) => string;
-  // generatePath: (params: TParams) => string;
   label?: string;
   path: string;
   protected?: boolean;
@@ -84,6 +83,29 @@ export const routes = {
       generatePath("/tenants/:slug", { slug }),
     label: "Tenant",
     path: "/tenants/:slug",
+    product: {
+      buildPath: ({
+        productId,
+        tenantSlug,
+      }: {
+        productId: string;
+        tenantSlug: string;
+      }) =>
+        generatePath("/tenants/:tenantSlug/products/:productId", {
+          productId,
+          tenantSlug,
+        }),
+      label: "Product",
+      path: "/tenants/:tenantSlug/products/:productId",
+      protected: true,
+    } satisfies RouteConfig<{ productId: string; tenantSlug: string }>,
+
     protected: true,
-  } satisfies RouteConfig<{ slug: string }>,
+  } satisfies {
+    buildPath: (params: { slug: string }) => string;
+    label: string;
+    path: string;
+    product: RouteConfig<{ productId: string; tenantSlug: string }>;
+    protected: boolean;
+  },
 } as const;

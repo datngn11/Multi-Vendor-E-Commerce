@@ -12,6 +12,20 @@ import { hasItems } from "@/shared/utils/arrays";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
 export const productsRouter = createTRPCRouter({
+  getById: baseProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const product = await ctx.payload.findByID({
+        collection: "products",
+        id: input.id,
+      });
+
+      return {
+        ...product,
+        image: product?.image as Media | null,
+        tenant: product.tenant as Tenant,
+      };
+    }),
   getMany: baseProcedure
     .input(
       z.object({
@@ -21,7 +35,7 @@ export const productsRouter = createTRPCRouter({
         tenantSlug: z.string().optional(),
         ...filterZodSchema.shape,
         ...sortZodSchema.shape,
-      }),
+      })
     )
     .query(async ({ ctx, input }) => {
       const { categorySlug, maxPrice, minPrice, sort, tags, tenantSlug } =
@@ -85,7 +99,7 @@ export const productsRouter = createTRPCRouter({
       const getAllDescendantIds = (categoryId: string): string[] => {
         // Find direct children
         const children = allCategories.filter(
-          (cat) => cat.parent === categoryId,
+          (cat) => cat.parent === categoryId
         );
 
         // Get IDs of direct children
