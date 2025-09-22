@@ -21,7 +21,7 @@ const TenantPage = async ({
 
   return (
     <HydrateClient>
-      <ProductBrowseLayout narrowView tenantSlug={tenantSlug} tenantView />;
+      <ProductBrowseLayout narrowView tenantSlug={tenantSlug} tenantView />
     </HydrateClient>
   );
 };

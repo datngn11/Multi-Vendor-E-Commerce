@@ -27,7 +27,6 @@ export const generatePath = <
     path = path.replace(`:${key}`, encodeURIComponent(String(value))) as Route;
   }
 
-  console.log({ path });
   // If no query params, return path as is
   if (!queryParams) return path;
 
@@ -42,5 +41,5 @@ export const generatePath = <
 
   const queryString = searchParams.toString();
 
-  return `${path}?${queryString}`;
+  return queryString ? `${path}?${queryString}` : path;
 };
