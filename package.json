@@ -12,14 +12,15 @@
     "db:generate": "payload generate:types",
     "db:seed": "tsx src/scripts/seed.ts",
     "db:reset": "npm run db:fresh && npm run db:seed",
-    "db:reset:local": "MONGODB_URI=mongodb://localhost:27017/velels npm run db:reset "
+    "db:reset:local": "MONGODB_URI=mongodb://localhost:27017/velels npm run db:reset",
+    "generate:importmap": "payload generate:importmap"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "@payloadcms/db-mongodb": "^3.49.1",
     "@payloadcms/next": "^3.49.1",
     "@payloadcms/payload-cloud": "^3.49.1",
-    "@payloadcms/plugin-multi-tenant": "^3.49.1",
+    "@payloadcms/plugin-multi-tenant": "^3.56.0",
     "@payloadcms/richtext-lexical": "^3.49.1",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-checkbox": "^1.3.2",
@@ -43,7 +44,7 @@
     "next": "^15.3.5",
     "next-themes": "^0.4.6",
     "nuqs": "^2.4.3",
-    "payload": "^3.49.1",
+    "payload": "^3.56.0",
     "react": "^19.1.0",
     "react-colorful": "^5.6.1",
     "react-dom": "^19.1.0",
@@ -52,6 +53,7 @@
     "sonner": "^2.0.6",
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
     "tw-animate-css": "^1.3.4",
     "vaul": "^1.1.2",
     "zod": "^3.25.67"

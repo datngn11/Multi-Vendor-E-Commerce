@@ -6,18 +6,16 @@ import {
 } from "@/features/tenants/components/TenantNavbar";
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 
-interface IProps {
-  children: React.ReactNode;
-  params: Promise<{ tenantSlug?: string }>;
-}
-
-const TenantPageLayout = async ({ children, params }: IProps) => {
+const TenantPageLayout = async ({
+  children,
+  params,
+}: LayoutProps<"/tenants/[tenantSlug]">) => {
   const { tenantSlug } = await params;
 
   prefetch(
     trpc.tenants.getBySlug.queryOptions({
       slug: tenantSlug,
-    }),
+    })
   );
 
   return (
@@ -26,6 +24,7 @@ const TenantPageLayout = async ({ children, params }: IProps) => {
         <Suspense fallback={<TenantNavbarSkeleton />}>
           <TenantNavbar tenantSlug={tenantSlug} />
         </Suspense>
+
         <div className="flex-1">
           <div className="mx-auto max-w-(--breakpoint-xl)">{children}</div>
         </div>

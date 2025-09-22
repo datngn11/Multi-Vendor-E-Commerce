@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 @import "tw-animate-css";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -48,6 +49,7 @@
   --spacing-reverseBoxShadowY: -4px;
   --radius-base: 10px;
   --shadow-shadow: var(--shadow);
+  --shadow-foreground: var(--shadow-foreground);
   --font-weight-base: 600;
   --font-weight-heading: 800;
 }
@@ -88,6 +90,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.723 0.219 149.579);
   --shadow: 4px 4px 0px 0px var(--border);
+  --shadow-foreground: 4px 4px 0px 0px var(--foreground);
 }
 
 .dark {
@@ -125,6 +128,7 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.527 0.154 150.069);
   --shadow: 4px 4px 0px 0px var(--border);
+  --shadow-foreground: 4px 4px 0px 0px var(--foreground);
 }
 
 @layer base {

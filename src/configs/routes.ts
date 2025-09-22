@@ -1,35 +1,34 @@
+// routes.ts
+import type { Route } from "next";
+
 import { generatePath } from "@/shared/utils/routing";
 
 export type RouteConfig<
   TParams extends Record<string, unknown> = Record<never, never>,
 > = {
-  buildPath: (params: TParams) => string;
-  // generatePath: (params: TParams) => string;
+  buildPath?: (params: TParams) => string;
   label?: string;
-  path: string;
+  path: Route;
   protected?: boolean;
 };
 
 export const routes = {
   about: {
-    buildPath: () => "/about",
     label: "About",
-    path: "/about",
+    path: "/about" satisfies Route,
     protected: false,
   } satisfies RouteConfig,
 
   auth: {
     login: {
-      buildPath: () => "/login",
       label: "Login",
-      path: "/login",
+      path: "/login" satisfies Route,
       protected: false,
     },
 
     register: {
-      buildPath: () => "/register",
       label: "Register",
-      path: "/register",
+      path: "/register" satisfies Route,
       protected: false,
     },
   } satisfies {
@@ -38,44 +37,47 @@ export const routes = {
   },
 
   contact: {
-    buildPath: () => "/contact",
     label: "Contact",
-    path: "/contact",
+    path: "/contact" satisfies Route,
     protected: false,
   } satisfies RouteConfig,
 
   dashboard: {
-    buildPath: () => "/admin",
     label: "Admin Dashboard",
-    path: "/admin",
+    path: "/admin" as Route,
     protected: true,
   } satisfies RouteConfig,
 
   features: {
-    buildPath: () => "/features",
     label: "Features",
-    path: "/features",
+    path: "/features" satisfies Route,
     protected: false,
   } satisfies RouteConfig,
 
   home: {
-    buildPath: () => "/",
+    category: {
+      buildPath: ({ parentSlug, slug }: { parentSlug: string; slug: string }) =>
+        generatePath("/:parentSlug/:slug", { parentSlug, slug }),
+      label: "Category",
+      path: "/:parentSlug/:slug" satisfies Route,
+      protected: false,
+    } satisfies RouteConfig<{ parentSlug: string; slug: string }>,
     label: "Home",
-    path: "/",
+    path: "/" satisfies Route,
     protected: false,
-  } satisfies RouteConfig,
+  } satisfies RouteConfig & {
+    category: RouteConfig<{ parentSlug: string; slug: string }>;
+  },
 
   library: {
-    buildPath: () => "/library",
     label: "Library",
-    path: "/library",
+    path: "/library" satisfies Route,
     protected: true,
   } satisfies RouteConfig,
 
   pricing: {
-    buildPath: () => "/pricing",
     label: "Pricing",
-    path: "/pricing",
+    path: "/pricing" satisfies Route,
     protected: false,
   } satisfies RouteConfig,
 
@@ -83,7 +85,30 @@ export const routes = {
     buildPath: ({ slug }: { slug: string }) =>
       generatePath("/tenants/:slug", { slug }),
     label: "Tenant",
-    path: "/tenants/:slug",
+    path: "/tenants/:slug" satisfies Route,
+    product: {
+      buildPath: ({
+        productId,
+        tenantSlug,
+      }: {
+        productId: string;
+        tenantSlug: string;
+      }) =>
+        generatePath("/tenants/:tenantSlug/products/:productId", {
+          productId,
+          tenantSlug,
+        }),
+      label: "Product",
+      path: "/tenants/:tenantSlug/products/:productId" satisfies Route,
+      protected: true,
+    } satisfies RouteConfig<{ productId: string; tenantSlug: string }>,
+
     protected: true,
-  } satisfies RouteConfig<{ slug: string }>,
+  } satisfies {
+    buildPath: (params: { slug: string }) => string;
+    label: string;
+    path: Route;
+    product: RouteConfig<{ productId: string; tenantSlug: string }>;
+    protected: boolean;
+  },
 } as const;

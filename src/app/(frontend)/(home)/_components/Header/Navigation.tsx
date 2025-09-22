@@ -50,7 +50,7 @@ export const MobileNavigation = () => {
           className={cn(
             "border-b-border flex w-full items-center gap-2 border-b-2 px-5 py-4 font-medium",
             "hover:bg-primary hover:text-primary-foreground",
-            currentPath === route.path && "bg-primary text-primary-foreground",
+            currentPath === route.path && "bg-primary text-primary-foreground"
           )}
           href={route.path}
           key={route.label}

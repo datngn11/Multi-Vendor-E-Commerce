@@ -9,12 +9,14 @@ function Progress({
   className,
   value,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+}: React.ComponentProps<typeof ProgressPrimitive.Root> & {
+  value?: number;
+}) {
   return (
     <ProgressPrimitive.Root
       className={cn(
         "rounded-base border-border bg-secondary-background relative h-4 w-full overflow-hidden border-2",
-        className,
+        className
       )}
       data-slot="progress"
       {...props}

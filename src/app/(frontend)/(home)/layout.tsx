@@ -9,21 +9,8 @@ import {
   SearchFiltersSkeleton,
 } from "./_components/SearchFilters";
 
-interface IProps {
-  children: React.ReactNode;
-  params: Promise<{ slug?: string[] }>;
-}
-
-const MainLayout = async ({ children, params }: IProps) => {
-  const { slug } = await params;
-
+const MainLayout = async ({ children }: LayoutProps<"/">) => {
   prefetch(trpc.categories.getMany.queryOptions());
-
-  prefetch(
-    trpc.categories.getBySlug.queryOptions({
-      slug: slug?.[0] || "all",
-    }),
-  );
 
   return (
     <HydrateClient>

@@ -25,6 +25,29 @@ export const Rating = ({ className, rating, reviews, variant }: IProps) => {
     },
   });
 
+  if (variant === "extended") {
+    return (
+      <div className={cn(variants({ variant }), className)}>
+        {[...Array(5)].map((_, index) => (
+          <StarIcon
+            className={cn(
+              "size-4",
+              index < Math.floor(rating)
+                ? "fill-primary text-primary"
+                : "fill-gray-300 text-gray-300"
+            )}
+            key={rating + index}
+          />
+        ))}
+        {reviews !== undefined && (
+          <span className="text-xl">
+            {reviews} {reviews === 1 ? "rating" : "ratings"}
+          </span>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className={cn(variants({ variant }), className)}>
       <StarIcon className="fill-foreground size-3.5" />
