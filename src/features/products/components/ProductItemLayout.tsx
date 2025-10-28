@@ -2,6 +2,7 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { LinkIcon } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 
 import { Author } from "@/shared/components/author";
@@ -10,7 +11,13 @@ import { Rating } from "@/shared/components/rating";
 import { Button } from "@/shared/components/ui/button";
 import { useTRPC } from "@/trpc/client";
 
+import { CartButtonSkeleton } from "./CartButton";
 import { ProductRatings } from "./ProductRatings";
+
+const CartButton = dynamic(
+  () => import("./CartButton").then((mod) => mod.CartButton),
+  { loading: () => <CartButtonSkeleton />, ssr: false }
+);
 
 const refundPolicies = {
   "14Days": "14-day money-back guarantee.",
@@ -76,13 +83,11 @@ export const ProductItemLayout = ({ productId }: IProps) => {
         <div className="border-foreground col-span-2 flex flex-col border-1 border-t-0 border-l-1 md:border-l-0">
           <div className="border-foreground flex flex-col border-b-1 p-6">
             <div className="flex flex-row items-center gap-2">
-              <Button
-                className="border-foreground flex-1 border-2"
-                size="lg"
-                variant="reverse"
-              >
-                Add to Cart
-              </Button>
+              <CartButton
+                productId={productId}
+                tenantSlug={product.tenant.slug}
+              />
+
               <Button
                 className="border-foreground border-2"
                 size="lg"

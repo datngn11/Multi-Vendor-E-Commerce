@@ -16,35 +16,28 @@ import { MobileNavigation } from "../Header/Navigation";
 
 export const Sidebar = () => {
   return (
-    <div className="lg:hidden">
-      <Drawer direction="left">
-        <DrawerTrigger asChild>
-          <Button
-            aria-label="Toggle menu"
-            className="lg:hidden"
-            size="icon"
-            variant="neutral"
-          >
-            <MenuIcon className="h-6 w-6" />
-          </Button>
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader className="border-b-border border-b-2 px-5">
-            <div className="flex items-center justify-between">
-              <DialogTitle>
-                <Logo />
-              </DialogTitle>
-              <div className="flex items-center gap-3">
-                <ThemeToggler />
+    <Drawer direction="left">
+      <DrawerTrigger asChild>
+        <Button aria-label="Toggle menu" size="icon" variant="neutral">
+          <MenuIcon className="h-6 w-6" />
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className="border-b-border border-b-2 px-5">
+          <div className="flex items-center justify-between">
+            <DialogTitle>
+              <Logo />
+            </DialogTitle>
+            <div className="flex items-center gap-3">
+              <ThemeToggler />
 
-                <AuthButton withRegistration={false} />
-              </div>
+              <AuthButton withRegistration={false} />
             </div>
-          </DrawerHeader>
+          </div>
+        </DrawerHeader>
 
-          <MobileNavigation />
-        </DrawerContent>
-      </Drawer>
-    </div>
+        <MobileNavigation />
+      </DrawerContent>
+    </Drawer>
   );
 };
