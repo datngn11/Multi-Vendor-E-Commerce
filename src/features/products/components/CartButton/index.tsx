@@ -1,3 +1,5 @@
+"use client";
+
 import { useCart } from "@/features/checkout/hooks/useCart";
 import { Button } from "@/shared/components/ui/button";
 
@@ -11,14 +13,18 @@ export const CartButton = ({ productId, tenantSlug }: IProps) => {
 
   const handleToggleProduct = () => toggleProduct(productId);
 
+  const inCart = isProductInCart(productId);
+
   return (
     <Button
+      aria-label={inCart ? "Remove from Cart" : "Add to Cart"}
+      aria-pressed={inCart}
       className="border-foreground flex-1 border-2"
       onClick={handleToggleProduct}
       size="lg"
       variant="reverse"
     >
-      {isProductInCart(productId) ? "Remove from Cart" : "Add to Cart"}
+      {inCart ? "Remove from Cart" : "Add to Cart"}
     </Button>
   );
 };

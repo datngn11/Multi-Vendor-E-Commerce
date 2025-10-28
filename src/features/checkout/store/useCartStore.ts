@@ -6,7 +6,7 @@ interface CartState {
   cart: Record<string, TenantCart>;
   clearCart: () => void;
   clearTenantCart: (tenantSlug: string) => void;
-  getTenantProductIds: (tenantSlug: string) => string[] | undefined;
+  getTenantProductIds: (tenantSlug: string) => string[];
   removeProduct: (tenantSlug: string, productId: string) => void;
 }
 

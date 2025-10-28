@@ -18,12 +18,7 @@ export const Sidebar = () => {
   return (
     <Drawer direction="left">
       <DrawerTrigger asChild>
-        <Button
-          aria-label="Toggle menu"
-          className="lg:hidden"
-          size="icon"
-          variant="neutral"
-        >
+        <Button aria-label="Toggle menu" size="icon" variant="neutral">
           <MenuIcon className="h-6 w-6" />
         </Button>
       </DrawerTrigger>

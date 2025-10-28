@@ -7,7 +7,6 @@ import { Button } from "@/shared/components/ui/button";
 import { useCart } from "../hooks/useCart";
 
 interface IProps {
-  className?: string;
   hideIfEmpty?: boolean;
   tenantSlug: string;
 }

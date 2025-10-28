@@ -5,11 +5,12 @@ export const useCart = (tenantSlug: string) => {
     addProduct,
     clearCart,
     clearTenantCart: clearCartByTenant,
-    getTenantProductIds,
     removeProduct,
   } = useCartStore();
 
-  const productIds = getTenantProductIds(tenantSlug);
+  const productIds = useCartStore(
+    (state) => state.cart[tenantSlug]?.productIds ?? []
+  );
 
   const toggleProduct = (productId: string) => {
     if (productIds?.includes(productId)) {
