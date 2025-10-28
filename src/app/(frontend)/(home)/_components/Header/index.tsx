@@ -18,7 +18,9 @@ export const Header = () => {
         <AuthButton />
       </div>
 
-      <Sidebar />
+      <div className="lg:hidden">
+        <Sidebar />
+      </div>
     </header>
   );
 };

@@ -1,9 +1,19 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 
+import { CheckoutButtonSkeleton } from "@/features/checkout/components/CheckoutButton";
 import { Author } from "@/shared/components/author";
 import { useTRPC } from "@/trpc/client";
+
+const CheckoutButton = dynamic(
+  () =>
+    import("@/features/checkout/components/CheckoutButton").then(
+      (mod) => mod.CheckoutButton
+    ),
+  { loading: () => <CheckoutButtonSkeleton />, ssr: false }
+);
 
 interface IProps {
   tenantSlug?: string;
@@ -12,7 +22,7 @@ interface IProps {
 export const TenantNavbar = ({ tenantSlug }: IProps) => {
   const trpc = useTRPC();
 
-  const { data: tenant } = useQuery(
+  const { data: tenant } = useSuspenseQuery(
     trpc.tenants.getBySlug.queryOptions(
       { slug: tenantSlug },
       { enabled: !!tenantSlug }
@@ -23,7 +33,7 @@ export const TenantNavbar = ({ tenantSlug }: IProps) => {
 
   return (
     <div className="bg-body-background flex h-20 items-center border-b px-6 lg:px-12">
-      <div className="mx-auto flex h-full max-w-(--breakpoint-xl) items-center justify-between">
+      <div className="flex h-full w-full max-w-(--breakpoint-xl) items-center justify-between">
         {tenant && (
           <Author
             avatar={tenant.image?.url}
@@ -33,6 +43,8 @@ export const TenantNavbar = ({ tenantSlug }: IProps) => {
             tenantSlug={tenantSlug}
           />
         )}
+
+        <CheckoutButton hideIfEmpty tenantSlug={tenantSlug} />
       </div>
     </div>
   );
@@ -46,6 +58,7 @@ export const TenantNavbarSkeleton = () => {
         <div className="flex flex-col">
           <div className="bg-background h-4 w-32 rounded" />
           <div className="bg-background h-4 w-24 rounded" />
+          <div className="bg-background h-4 w-16 rounded" />
         </div>
       </div>
     </div>
