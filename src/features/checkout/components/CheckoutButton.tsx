@@ -1,3 +1,5 @@
+"use client";
+
 import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -18,7 +20,7 @@ export const CheckoutButton = ({ hideIfEmpty, tenantSlug }: IProps) => {
 
   return (
     <Button asChild size="lg" variant="neutral">
-      <Link href={routes.tenants.buildPath({ slug: tenantSlug })}>
+      <Link href={routes.tenants.checkout.buildPath({ tenantSlug })}>
         <ShoppingCartIcon /> {totalItems || ""}
       </Link>
     </Button>
