@@ -11,6 +11,7 @@ interface IProps {
   name: string;
   size?: "default" | "lg" | "sm";
   tenantSlug: string;
+  withAvatar?: boolean;
 }
 
 export const Author = ({
@@ -19,6 +20,7 @@ export const Author = ({
   name,
   size,
   tenantSlug,
+  withAvatar = true,
 }: IProps) => {
   if (!name) return null;
 
@@ -56,13 +58,15 @@ export const Author = ({
       href={routes.tenants.buildPath({ slug: tenantSlug })}
       onClick={(e) => e.stopPropagation()}
     >
-      <Image
-        alt={name || "Author Avatar"}
-        className={avatarVariants({ size })}
-        height={imageSize}
-        src={avatar ?? "/images/author-placeholder.png"}
-        width={imageSize}
-      />
+      {withAvatar && (
+        <Image
+          alt={name || "Author Avatar"}
+          className={avatarVariants({ size })}
+          height={imageSize}
+          src={avatar ?? "/images/author-placeholder.png"}
+          width={imageSize}
+        />
+      )}
       <span>{name}</span>
     </Link>
   );

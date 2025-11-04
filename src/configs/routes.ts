@@ -84,6 +84,13 @@ export const routes = {
   tenants: {
     buildPath: ({ slug }: { slug: string }) =>
       generatePath("/tenants/:slug", { slug }),
+    checkout: {
+      buildPath: ({ tenantSlug }: { tenantSlug: string }) =>
+        generatePath("/tenants/:tenantSlug/checkout", { tenantSlug }),
+      label: "Checkout",
+      path: "/tenants/:tenantSlug/checkout" satisfies Route,
+      protected: true,
+    } satisfies RouteConfig<{ tenantSlug: string }>,
     label: "Tenant",
     path: "/tenants/:slug" satisfies Route,
     product: {
@@ -102,10 +109,10 @@ export const routes = {
       path: "/tenants/:tenantSlug/products/:productId" satisfies Route,
       protected: true,
     } satisfies RouteConfig<{ productId: string; tenantSlug: string }>,
-
     protected: true,
   } satisfies {
     buildPath: (params: { slug: string }) => string;
+    checkout: RouteConfig<{ tenantSlug: string }>;
     label: string;
     path: Route;
     product: RouteConfig<{ productId: string; tenantSlug: string }>;
