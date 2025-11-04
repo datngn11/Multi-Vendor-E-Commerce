@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import { useTRPC } from "@/trpc/client";
 
 import { useCart } from "../../hooks/useCart";
-import { CehckoutCartNotFound } from "./CehckoutCartNotFound";
 import { CheckoutCartItem } from "./CheckoutCartItem";
+import { CheckoutCartNotFound } from "./CheckoutCartNotFound";
 import { CheckoutCartSidebar } from "./CheckoutCartSidebar";
 
 interface IProps {
@@ -19,10 +19,10 @@ interface IProps {
 export const CheckoutCartLayout = ({ tenantSlug }: IProps) => {
   const { clearCart, productIds, removeFromCart } = useCart(tenantSlug);
 
-  const tprc = useTRPC();
+  const trpc = useTRPC();
 
   const { data, error, isLoading } = useQuery(
-    tprc.checkout.getProducts.queryOptions({
+    trpc.checkout.getProducts.queryOptions({
       ids: productIds,
     })
   );
@@ -68,7 +68,7 @@ export const CheckoutCartLayout = ({ tenantSlug }: IProps) => {
           </div>
         </div>
       ) : (
-        <CehckoutCartNotFound />
+        <CheckoutCartNotFound />
       )}
     </div>
   );

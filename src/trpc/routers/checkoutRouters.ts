@@ -8,21 +8,23 @@ export const checkoutRouters = createTRPCRouter({
   getProducts: baseProcedure
     .input(
       z.object({
-        ids: z.array(z.string()),
+        ids: z.array(z.string()).min(1).max(100),
       })
     )
     .query(async ({ ctx, input }) => {
+      const uniqueIds = Array.from(new Set(input.ids));
+
       const data = await ctx.payload.find({
         collection: "products",
         depth: 2,
         where: {
           id: {
-            in: input.ids,
+            in: uniqueIds,
           },
         },
       });
 
-      if (data.totalDocs !== input.ids.length) {
+      if (data.totalDocs !== uniqueIds.length) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Some products not found",
@@ -41,7 +43,7 @@ export const checkoutRouters = createTRPCRouter({
           },
         })),
         totalPrice: data.docs
-          .reduce((acc, product) => acc + product.price, 0)
+          .reduce((acc, p) => acc + Number(p.price), 0)
           .toString(),
       };
     }),

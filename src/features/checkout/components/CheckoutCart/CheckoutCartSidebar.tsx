@@ -31,7 +31,7 @@ export const CheckoutCartSidebar = ({
         </section>
       </div>
 
-      {!isCanceled && (
+      {isCanceled && (
         <section className="bg-background rounded-md border p-4">
           <div className="flex items-center justify-center">
             <div className="w-full rounded border border-red-400 bg-red-100 px-4 py-3 font-medium">

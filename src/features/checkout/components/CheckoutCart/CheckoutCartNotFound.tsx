@@ -4,7 +4,7 @@ import Link from "next/link";
 import { routes } from "@/configs/routes";
 import { Button } from "@/shared/components/ui/button";
 
-export const CehckoutCartNotFound = () => {
+export const CheckoutCartNotFound = () => {
   return (
     <div className="bg-background border-border flex h-full w-full flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed p-6 sm:text-center">
       <figure className="w-full">
