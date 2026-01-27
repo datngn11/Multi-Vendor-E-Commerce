@@ -1,13 +1,15 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { LoaderIcon } from "lucide-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
+import { Spinner } from "@/shared/components/ui/spinner";
 import { useTRPC } from "@/trpc/client";
 
 import { useCart } from "../../hooks/useCart";
+import { useCheckoutStates } from "../../hooks/useCheckoutStates";
 import { CheckoutCartItem } from "./CheckoutCartItem";
 import { CheckoutCartNotFound } from "./CheckoutCartNotFound";
 import { CheckoutCartSidebar } from "./CheckoutCartSidebar";
@@ -17,7 +19,9 @@ interface IProps {
 }
 
 export const CheckoutCartLayout = ({ tenantSlug }: IProps) => {
+  const router = useRouter();
   const { clearCart, productIds, removeFromCart } = useCart(tenantSlug);
+  const [states, setStates] = useCheckoutStates();
 
   const trpc = useTRPC();
 
@@ -27,20 +31,48 @@ export const CheckoutCartLayout = ({ tenantSlug }: IProps) => {
     })
   );
 
+  const { isPending, mutate: purchaseMutation } = useMutation(
+    trpc.checkout.purchase.mutationOptions({
+      onError() {
+        setStates({ cancel: true, success: false });
+      },
+      onMutate() {
+        setStates({ cancel: false, success: false });
+      },
+      onSuccess(data) {
+        globalThis.location.href = data.url;
+      },
+    })
+  );
+
+  const handlePurchase = async () => {
+    purchaseMutation({
+      productIds,
+      tenantSlug,
+    });
+  };
+
   useEffect(() => {
     if (error?.data?.code === "NOT_FOUND") {
       clearCart();
-      toast.warning("Invalid products in cart. Cart cleared.", {
+      toast.warning("Invalid products in cart. Cart cleared", {
         duration: 5000,
       });
     }
   }, [error, clearCart]);
 
+  useEffect(() => {
+    if (states.success) {
+      clearCart();
+      router.replace("/?success=true");
+    }
+  }, [states.success, router, clearCart]);
+
   if (isLoading) {
     return (
       <div className="p-4">
         <div className="bg-background flex h-96 items-center justify-center border-dashed p-6">
-          <LoaderIcon className="animate-spin" size={24} />
+          <Spinner className="size-10" />
         </div>
       </div>
     );
@@ -64,7 +96,12 @@ export const CheckoutCartLayout = ({ tenantSlug }: IProps) => {
           </div>
 
           <div className="lg:col-span-3">
-            <CheckoutCartSidebar totalPrice={data.totalPrice} />
+            <CheckoutCartSidebar
+              isCanceled={states.cancel}
+              isPending={isPending}
+              onPurchase={handlePurchase}
+              totalPrice={data.totalPrice}
+            />
           </div>
         </div>
       ) : (

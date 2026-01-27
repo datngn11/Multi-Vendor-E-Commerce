@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -24,6 +24,7 @@ import { LoginSchema } from "../schemas";
 const LoginPage = () => {
   const trpc = useTRPC();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const queryClient = useQueryClient();
 
   const { isPending, mutate: login } = useMutation(
@@ -34,9 +35,18 @@ const LoginPage = () => {
       onSuccess: async () => {
         toast.success("Login successful");
         await queryClient.invalidateQueries(trpc.auth.session.queryOptions());
+
+        const redirectFrom = searchParams.get("redirectFrom");
+
+        if (redirectFrom) {
+          router.replace(`/${redirectFrom}`);
+
+          return;
+        }
+
         router.push("/");
       },
-    }),
+    })
   );
 
   const form = useForm<z.infer<typeof LoginSchema>>({

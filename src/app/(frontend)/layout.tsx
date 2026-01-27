@@ -22,9 +22,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${dmSans.variable} antialiased`}>
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          {children}
 
-        <Toaster richColors />
+          <Toaster richColors />
+        </AppProviders>
       </body>
     </html>
   );

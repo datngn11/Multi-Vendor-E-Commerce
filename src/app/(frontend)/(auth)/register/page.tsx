@@ -38,7 +38,7 @@ const RegisterPage = () => {
         await queryClient.invalidateQueries(trpc.auth.session.queryOptions());
         router.push("/");
       },
-    }),
+    })
   );
 
   const form = useForm<z.infer<typeof RegisterSchema>>({

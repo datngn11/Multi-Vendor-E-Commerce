@@ -1,7 +1,10 @@
 import {
   defaultShouldDehydrateQuery,
+  MutationCache,
+  QueryCache,
   QueryClient,
 } from "@tanstack/react-query";
+import { TRPCClientError } from "@trpc/client";
 import superjson from "superjson";
 
 export function makeQueryClient() {
@@ -20,5 +23,29 @@ export function makeQueryClient() {
         staleTime: 30 * 1000,
       },
     },
+    mutationCache: new MutationCache({
+      onError: (error) => {
+        handleGlobalError(error);
+      },
+    }),
+    queryCache: new QueryCache({
+      onError: (error) => {
+        handleGlobalError(error);
+      },
+    }),
   });
+}
+
+function handleGlobalError(error: unknown) {
+  if (error instanceof TRPCClientError && error.data?.code === "UNAUTHORIZED") {
+    if (window.location.pathname === "/login") {
+      return;
+    }
+
+    const currentPath = window.location.pathname + window.location.search;
+
+    window.location.href = `/login?redirectFrom=${encodeURIComponent(
+      currentPath.slice(1)
+    )}`;
+  }
 }

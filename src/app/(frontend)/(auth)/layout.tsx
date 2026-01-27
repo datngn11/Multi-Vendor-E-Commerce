@@ -19,7 +19,7 @@ const AuthLayout = async ({ children }: { children: ReactNode }) => {
     <Suspense
       fallback={
         <div className="flex size-full items-center justify-center">
-          <Spinner size="md" />
+          <Spinner />
         </div>
       }
     >
