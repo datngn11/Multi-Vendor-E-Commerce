@@ -1,3 +1,4 @@
+import { CheckoutSuccessToast } from "@/features/checkout/components/CheckoutSuccessToast";
 import { ProductBrowseLayout } from "@/features/products/components/ProductBrowseLayout";
 import { loadProductFilterParams } from "@/features/products/components/ProductsFilters/server";
 import { DEFAULT_PRODUCTS_LIMIT } from "@/shared/constants";
@@ -18,10 +19,11 @@ const HomePage = async ({ searchParams }: PageProps<"/">) => {
       <div className="px-4 py-20 lg:px-12">
         <h1 className="text-center text-4xl font-bold">Welcome to VELÉLS</h1>
         <p className="text-center">
-          This is a simple and elegant design system for your projects.
+          This is a simple and elegant platform for your projects.
         </p>
       </div>
 
+      <CheckoutSuccessToast />
       <ProductBrowseLayout />
     </HydrateClient>
   );

@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 
 import { Category } from "./collections/Category";
 import { Media } from "./collections/Media";
+import { Order } from "./collections/Order";
 import { Product } from "./collections/Product";
 import { Tag } from "./collections/Tag";
 import { Tenant } from "./collections/Tenant";
@@ -28,7 +29,7 @@ export default buildConfig({
     },
     user: User.slug,
   },
-  collections: [User, Media, Category, Product, Tag, Tenant],
+  collections: [User, Media, Category, Product, Tag, Tenant, Order],
   cookiePrefix: "velels",
   db: mongooseAdapter({
     url: env.MONGODB_URI,
@@ -38,6 +39,7 @@ export default buildConfig({
     payloadCloudPlugin(),
     multiTenantPlugin<Config>({
       collections: {
+        orders: {},
         products: {},
       },
       tenantsArrayField: {

@@ -51,6 +51,7 @@
     "react-hook-form": "^7.59.0",
     "server-only": "^0.0.1",
     "sonner": "^2.0.6",
+    "stripe": "^19.2.1",
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",

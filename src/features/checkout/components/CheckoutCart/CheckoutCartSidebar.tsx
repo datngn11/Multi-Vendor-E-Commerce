@@ -1,17 +1,20 @@
 import { CircleXIcon } from "lucide-react";
 
 import { Button } from "@/shared/components/ui/button";
+import { Spinner } from "@/shared/components/ui/spinner";
 import { formatAsCurrency } from "@/shared/utils/numbers/formatAsCurrency";
 
 interface IProps {
-  isCanceled?: boolean;
-  onCheckout?: () => void;
+  isCanceled: boolean;
+  isPending: boolean;
+  onPurchase?: () => Promise<void>;
   totalPrice: string;
 }
 
 export const CheckoutCartSidebar = ({
   isCanceled,
-  onCheckout,
+  isPending,
+  onPurchase,
   totalPrice,
 }: IProps) => {
   return (
@@ -25,8 +28,20 @@ export const CheckoutCartSidebar = ({
         </section>
 
         <section className="p-4">
-          <Button className="w-full" onClick={onCheckout} variant="reverse">
-            Checkout
+          <Button
+            className="w-full"
+            disabled={isPending}
+            onClick={onPurchase}
+            variant="destructive"
+          >
+            {isPending ? (
+              <>
+                <Spinner />
+                Processing payment...
+              </>
+            ) : (
+              "Checkout"
+            )}
           </Button>
         </section>
       </div>

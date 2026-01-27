@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "../init";
-import { authRouter } from "./authRouters";
+import { authRouter } from "./authRouter";
 import { categoriesRouter } from "./categoriesRouter";
-import { checkoutRouters } from "./checkoutRouters";
+import { checkoutRouters } from "./checkoutRouter";
 import { productsRouter } from "./productsRouter";
 import { tagsRouter } from "./tagsRouter";
 import { tenantsRouter } from "./tenantsRouter";
